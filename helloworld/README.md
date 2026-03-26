@@ -22,10 +22,5 @@ g++ main.cpp -o helloworld
 
 ```sh
 ./helloworld
-```
-
-You should see:
-
-```
 Hello, World!
 ```
