@@ -1,65 +1,42 @@
 cmake_minimum_required(VERSION 3.16)
-project(hello_cpp_tests C)
+project(hello_cpp_tests CXX)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- インクルードパス ---
+# --- Google Test を FetchContent で取得 ---
 
-set(UNITY_SRC_DIR  ${CMAKE_SOURCE_DIR}/vendor/unity/src)
-set(CMOCK_SRC_DIR  ${CMAKE_SOURCE_DIR}/vendor/cmock/src)
-set(SRC_DIR        ${CMAKE_SOURCE_DIR}/src)
-set(TEST_DIR       ${CMAKE_SOURCE_DIR}/test)
-set(MOCK_DIR       ${CMAKE_SOURCE_DIR}/test/mocks)
-
-# --- Unity ライブラリ ---
-
-add_library(unity STATIC
-    ${UNITY_SRC_DIR}/unity.c
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP ON
 )
-target_include_directories(unity PUBLIC ${UNITY_SRC_DIR})
-
-# --- CMock ライブラリ ---
-
-add_library(cmock STATIC
-    ${CMOCK_SRC_DIR}/cmock.c
-)
-target_include_directories(cmock PUBLIC ${CMOCK_SRC_DIR} ${UNITY_SRC_DIR})
-target_link_libraries(cmock PUBLIC unity)
+# Windows での runtime 設定の上書きを抑止
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 # --- プロダクションコード ---
 
-add_library(calculator STATIC ${SRC_DIR}/calculator.c)
-target_include_directories(calculator PUBLIC ${SRC_DIR})
+add_library(calculator STATIC src/calculator.cpp)
+target_include_directories(calculator PUBLIC src)
 
-add_library(clock STATIC ${SRC_DIR}/clock.c)
-target_include_directories(clock PUBLIC ${SRC_DIR})
+add_library(clock_lib STATIC src/Clock.cpp)
+target_include_directories(clock_lib PUBLIC src)
 
-# --- テスト 1: Unity を使った calculator のテスト ---
-
-add_executable(test_calculator
-    ${TEST_DIR}/test_calculator.c
-    ${SRC_DIR}/calculator.c
-)
-target_include_directories(test_calculator PRIVATE ${SRC_DIR} ${UNITY_SRC_DIR})
-target_link_libraries(test_calculator PRIVATE unity)
-
-# --- テスト 2: CMock を使った clock のテスト (time_provider をモック化) ---
-
-add_executable(test_clock
-    ${TEST_DIR}/test_clock.c
-    ${SRC_DIR}/clock.c
-    ${MOCK_DIR}/mock_time_provider.c   # モック (time_provider.c の代わり)
-)
-target_include_directories(test_clock PRIVATE
-    ${SRC_DIR}
-    ${UNITY_SRC_DIR}
-    ${CMOCK_SRC_DIR}
-    ${MOCK_DIR}
-)
-target_link_libraries(test_clock PRIVATE unity cmock)
-
-# --- CTest 登録 ---
+# --- テスト ---
 
 enable_testing()
-add_test(NAME calculator_tests COMMAND test_calculator)
-add_test(NAME clock_tests      COMMAND test_clock)
+include(GoogleTest)
+
+# テスト 1: Google Test を使った Calculator のテスト
+add_executable(test_calculator test/test_calculator.cpp)
+target_include_directories(test_calculator PRIVATE src)
+target_link_libraries(test_calculator PRIVATE calculator GTest::gtest_main)
+gtest_discover_tests(test_calculator)
+
+# テスト 2: Google Mock を使った Clock のテスト (ITimeProvider をモック化)
+add_executable(test_clock test/test_clock.cpp)
+target_include_directories(test_clock PRIVATE src)
+target_link_libraries(test_clock PRIVATE clock_lib GTest::gtest_main GTest::gmock)
+gtest_discover_tests(test_clock)
