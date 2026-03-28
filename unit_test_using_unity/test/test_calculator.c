@@ -1,5 +1,6 @@
-#include "../unity/unity.h"
-#include "../src/calculator.h"
+#include "unity.h"
+#include "calculator.h"
+
 
 void setUp(void)
 {

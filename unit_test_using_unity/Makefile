@@ -3,7 +3,7 @@ CFLAGS  = -Wall -Wextra -I. -Isrc -Iunity
 
 UNITY_SRC = unity/unity.c
 SRC       = src/calculator.c
-TEST_SRC  = test_calculator.c
+TEST_SRC  = test/test_calculator.c
 
 TARGET = test_runner
 
