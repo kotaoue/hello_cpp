@@ -42,7 +42,7 @@ static std::time_t make_time(int hour, int min) {
 
 using ::testing::Return;
 
-TEST(ClockGreeting, 朝は_GoodMorning) {
+TEST(ClockGreeting, Morning_GoodMorning) {
     MockTimeProvider mock;
     // now() が午前 8 時を返すよう期待を設定
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(8, 0)));
@@ -51,7 +51,7 @@ TEST(ClockGreeting, 朝は_GoodMorning) {
     EXPECT_EQ("Good morning", clock.greeting());
 }
 
-TEST(ClockGreeting, 昼は_GoodAfternoon) {
+TEST(ClockGreeting, Afternoon_GoodAfternoon) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(14, 0)));
 
@@ -59,7 +59,7 @@ TEST(ClockGreeting, 昼は_GoodAfternoon) {
     EXPECT_EQ("Good afternoon", clock.greeting());
 }
 
-TEST(ClockGreeting, 夜は_GoodEvening) {
+TEST(ClockGreeting, Evening_GoodEvening) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(21, 0)));
 
@@ -67,7 +67,7 @@ TEST(ClockGreeting, 夜は_GoodEvening) {
     EXPECT_EQ("Good evening", clock.greeting());
 }
 
-TEST(ClockGreeting, 深夜0時は_GoodMorning) {
+TEST(ClockGreeting, Midnight_GoodMorning) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(0, 0)));
 
@@ -75,7 +75,7 @@ TEST(ClockGreeting, 深夜0時は_GoodMorning) {
     EXPECT_EQ("Good morning", clock.greeting());
 }
 
-TEST(ClockGreeting, 11時59分は_GoodMorning) {
+TEST(ClockGreeting, At11h59m_GoodMorning) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(11, 59)));
 
@@ -83,7 +83,7 @@ TEST(ClockGreeting, 11時59分は_GoodMorning) {
     EXPECT_EQ("Good morning", clock.greeting());
 }
 
-TEST(ClockGreeting, 12時ちょうどは_GoodAfternoon) {
+TEST(ClockGreeting, At12h00m_GoodAfternoon) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(12, 0)));
 
@@ -91,7 +91,7 @@ TEST(ClockGreeting, 12時ちょうどは_GoodAfternoon) {
     EXPECT_EQ("Good afternoon", clock.greeting());
 }
 
-TEST(ClockGreeting, 17時59分は_GoodAfternoon) {
+TEST(ClockGreeting, At17h59m_GoodAfternoon) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(17, 59)));
 
@@ -99,7 +99,7 @@ TEST(ClockGreeting, 17時59分は_GoodAfternoon) {
     EXPECT_EQ("Good afternoon", clock.greeting());
 }
 
-TEST(ClockGreeting, 18時ちょうどは_GoodEvening) {
+TEST(ClockGreeting, At18h00m_GoodEvening) {
     MockTimeProvider mock;
     EXPECT_CALL(mock, now()).WillOnce(Return(make_time(18, 0)));
 
