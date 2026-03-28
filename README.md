@@ -1,50 +1,18 @@
 # hello_cpp
 
-Google Test を使ったシンプルなユニットテストのサンプルです。
+C++ の学習用リポジトリです。  
+各ディレクトリに独立したサンプルプログラムが入っています。
 
 ---
 
-## ディレクトリ構成
+## サンプル一覧
 
-```
-.
-├── CMakeLists.txt          # ビルド設定（FetchContent で Google Test を取得）
-├── src/
-│   ├── calculator.h        # 足し算・引き算・掛け算の関数宣言
-│   └── calculator.cpp      # 足し算・引き算・掛け算の実装
-└── test/
-    └── test_calculator.cpp # Google Test を使ったテスト
-```
+| ディレクトリ | 内容 |
+|---|---|
+| `helloworld/` | Hello World — C++ の最小構成 |
+| `unit_test/` | Google Test を使ったシンプルなユニットテスト |
+| `unit_test_using_unity/` | Unity フレームワークを使った C 言語向けユニットテスト |
+| `unit_test_with_mock/` | Google Mock を使ったモックテスト |
+| `concepts_generics/` | C++20 Concepts を使った型制約付きジェネリクスライブラリ |
 
----
-
-## Google Test を使った簡単なテスト
-
-**Google Test** は Google 製の C++ テストフレームワークで、C++ のデファクトスタンダードです。
-
-```cpp
-// テストケース例
-TEST(CalculatorAdd, 正の数同士) {
-    EXPECT_EQ(5, calculator_add(2, 3));
-}
-```
-
-`TEST(スイート名, テスト名)` マクロでテストケースを定義し、  
-`EXPECT_EQ(期待値, 実際値)` で検証します。
-
----
-
-## ビルドと実行
-
-```sh
-mkdir build && cd build
-cmake ..
-make
-ctest --output-on-failure
-```
-
-### 実行結果例
-
-```
-100% tests passed, 0 tests failed out of 7
-```
+各ディレクトリの `README.md` にビルド手順と解説があります。

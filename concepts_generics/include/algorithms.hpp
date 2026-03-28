@@ -11,19 +11,7 @@
 #include <string>
 #include <vector>
 
-// ============================================================
-// Concepts を使った制約付きアルゴリズム
-//
-// テンプレート引数に concept 制約を付けることで、
-// 不適切な型が渡されたときにコンパイルエラーが
-// 分かりやすいメッセージで出る。
-// ============================================================
-
-// ------------------------------------------------------------
-// sort_if_sortable
-//   SortableContainer 制約を持つコンテナをソートして返す。
-//   requires 節をそのまま書く別記法も示す。
-// ------------------------------------------------------------
+// コンテナをソートして返す
 template <SortableContainer C>
 C sort_if_sortable(C container)
 {
@@ -31,11 +19,7 @@ C sort_if_sortable(C container)
     return container;
 }
 
-// ------------------------------------------------------------
-// print_all
-//   PrintableContainer 制約: 各要素を区切り文字で出力する。
-//   デフォルト区切りはスペース、末尾に改行。
-// ------------------------------------------------------------
+// 各要素を区切り文字で出力する
 template <PrintableContainer C>
 void print_all(const C& container,
                std::ostream& os = std::cout,
@@ -50,11 +34,7 @@ void print_all(const C& container,
     os << '\n';
 }
 
-// ------------------------------------------------------------
-// sum
-//   Addable な要素を持つコンテナの総和を返す。
-//   std::accumulate の型安全なラッパー。
-// ------------------------------------------------------------
+// Addable な要素を持つコンテナの総和を返す
 template <Container C>
     requires Addable<std::ranges::range_value_t<C>>
 auto sum(const C& container) -> std::ranges::range_value_t<C>
@@ -63,11 +43,7 @@ auto sum(const C& container) -> std::ranges::range_value_t<C>
     return std::accumulate(std::begin(container), std::end(container), T{});
 }
 
-// ------------------------------------------------------------
-// max_element_of
-//   Sortable な要素を持つコンテナの最大要素を返す。
-//   空コンテナは例外を投げる。
-// ------------------------------------------------------------
+// 最大要素を返す（空コンテナは例外を投げる）
 template <SortableContainer C>
 auto max_element_of(const C& container) -> std::ranges::range_value_t<C>
 {
@@ -77,10 +53,7 @@ auto max_element_of(const C& container) -> std::ranges::range_value_t<C>
     return *std::ranges::max_element(container);
 }
 
-// ------------------------------------------------------------
-// min_element_of
-//   max_element_of の最小値版。
-// ------------------------------------------------------------
+// 最小要素を返す（空コンテナは例外を投げる）
 template <SortableContainer C>
 auto min_element_of(const C& container) -> std::ranges::range_value_t<C>
 {
@@ -90,12 +63,7 @@ auto min_element_of(const C& container) -> std::ranges::range_value_t<C>
     return *std::ranges::min_element(container);
 }
 
-// ------------------------------------------------------------
-// filter_and_print
-//   Ranges + Concepts の組み合わせ例。
-//   述語で絞り込んだ要素を出力する。
-//   述語の戻り値は bool に変換可能でなければならない。
-// ------------------------------------------------------------
+// 述語で絞り込んだ要素を出力する（Ranges との組み合わせ例）
 template <PrintableContainer C, typename Pred>
     requires std::predicate<Pred, const std::ranges::range_value_t<C>&>
 void filter_and_print(const C& container,
@@ -112,11 +80,7 @@ void filter_and_print(const C& container,
     os << '\n';
 }
 
-// ------------------------------------------------------------
-// transform_and_collect
-//   各要素に変換関数を適用し、新しい vector に収めて返す。
-//   Ranges views::transform のラッパー。
-// ------------------------------------------------------------
+// 各要素に変換関数を適用し、新しい vector に収めて返す
 template <Container C, typename F>
     requires std::invocable<F, const std::ranges::range_value_t<C>&>
 auto transform_and_collect(const C& container, F func)
@@ -131,10 +95,7 @@ auto transform_and_collect(const C& container, F func)
     return result;
 }
 
-// ------------------------------------------------------------
-// clamp_all
-//   Numeric 制約: 各要素を [lo, hi] の範囲にクランプする。
-// ------------------------------------------------------------
+// 各要素を [lo, hi] の範囲にクランプする
 template <Container C>
     requires Numeric<std::ranges::range_value_t<C>>
 C clamp_all(C container,
@@ -146,3 +107,4 @@ C clamp_all(C container,
     }
     return container;
 }
+
