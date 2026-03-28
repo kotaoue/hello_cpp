@@ -8,12 +8,13 @@ Google Test を使ったシンプルなユニットテストのサンプルで�
 
 ```
 .
-├── CMakeLists.txt          # ビルド設定（FetchContent で Google Test を取得）
-├── src/
-│   ├── calculator.h        # 足し算・引き算・掛け算の関数宣言
-│   └── calculator.cpp      # 足し算・引き算・掛け算の実装
-└── test/
-    └── test_calculator.cpp # Google Test を使ったテスト
+└── unit_test/
+    ├── CMakeLists.txt          # ビルド設定（FetchContent で Google Test を取得）
+    ├── src/
+    │   ├── calculator.h        # 足し算・引き算・掛け算の関数宣言
+    │   └── calculator.cpp      # 足し算・引き算・掛け算の実装
+    └── test/
+        └── test_calculator.cpp # Google Test を使ったテスト
 ```
 
 ---
@@ -37,6 +38,7 @@ TEST(CalculatorAdd, 正の数同士) {
 ## ビルドと実行
 
 ```sh
+cd unit_test
 mkdir build && cd build
 cmake ..
 make
