@@ -15,5 +15,6 @@ C++ の学習用リポジトリです。
 | `unit_test_with_mock/` | Google Mock を使ったモックテスト |
 | `concepts_generics/` | C++20 Concepts を使った型制約付きジェネリクスライブラリ |
 | `file_io/` | テキストファイルの読み書きサンプルと Google Test によるテスト |
+| `character_encoding/` | iconv を使った文字コード変換（UTF-8・Shift-JIS・EUC-JP）サンプルと Google Test によるテスト |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
