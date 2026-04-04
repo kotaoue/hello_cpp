@@ -24,21 +24,21 @@ protected:
 
 // --- 書き込みテスト ---
 
-TEST_F(FileIoTest, 文字列をファイルに書き込める) {
+TEST_F(FileIoTest, WritesStringToFile) {
     EXPECT_TRUE(write_text_file(kTestFile, "Hello, World!"));
 }
 
-TEST_F(FileIoTest, 空文字列を書き込める) {
+TEST_F(FileIoTest, WritesEmptyString) {
     EXPECT_TRUE(write_text_file(kTestFile, ""));
 }
 
-TEST_F(FileIoTest, 書き込み先が無効なパスの場合は失敗する) {
+TEST_F(FileIoTest, FailsWhenWritingToInvalidPath) {
     EXPECT_FALSE(write_text_file("/invalid_dir/no_such_file.txt", "data"));
 }
 
 // --- 読み込みテスト ---
 
-TEST_F(FileIoTest, 書き込んだ内容をそのまま読み込める) {
+TEST_F(FileIoTest, ReadsWrittenContentCorrectly) {
     const std::string expected = "Hello, File IO!";
     ASSERT_TRUE(write_text_file(kTestFile, expected));
 
@@ -47,7 +47,7 @@ TEST_F(FileIoTest, 書き込んだ内容をそのまま読み込める) {
     EXPECT_EQ(expected, actual);
 }
 
-TEST_F(FileIoTest, 複数行のテキストを読み書きできる) {
+TEST_F(FileIoTest, HandlesMultiLineText) {
     const std::string expected = "line1\nline2\nline3\n";
     ASSERT_TRUE(write_text_file(kTestFile, expected));
 
@@ -56,7 +56,7 @@ TEST_F(FileIoTest, 複数行のテキストを読み書きできる) {
     EXPECT_EQ(expected, actual);
 }
 
-TEST_F(FileIoTest, 空ファイルを読み込むと空文字列になる) {
+TEST_F(FileIoTest, ReadsEmptyFileAsEmptyString) {
     ASSERT_TRUE(write_text_file(kTestFile, ""));
 
     std::string actual;
@@ -64,14 +64,14 @@ TEST_F(FileIoTest, 空ファイルを読み込むと空文字列になる) {
     EXPECT_EQ("", actual);
 }
 
-TEST_F(FileIoTest, 存在しないファイルの読み込みは失敗する) {
+TEST_F(FileIoTest, FailsWhenReadingNonexistentFile) {
     std::string content;
     EXPECT_FALSE(read_text_file("nonexistent_file.txt", content));
 }
 
 // --- 上書きテスト ---
 
-TEST_F(FileIoTest, 同じファイルに再度書き込むと内容が上書きされる) {
+TEST_F(FileIoTest, OverwritesFileOnSecondWrite) {
     ASSERT_TRUE(write_text_file(kTestFile, "first"));
     ASSERT_TRUE(write_text_file(kTestFile, "second"));
 
