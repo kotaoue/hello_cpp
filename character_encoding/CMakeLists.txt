@@ -16,10 +16,15 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# --- iconv の検出（macOS では独立したライブラリとしてリンクが必要）---
+
+find_package(Iconv REQUIRED)
+
 # --- プロダクションコード ---
 
 add_library(encoding_converter STATIC src/encoding_converter.cpp)
 target_include_directories(encoding_converter PUBLIC src)
+target_link_libraries(encoding_converter PUBLIC Iconv::Iconv)
 
 # --- テスト ---
 
