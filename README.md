@@ -14,5 +14,6 @@ C++ の学習用リポジトリです。
 | `unit_test_using_unity/` | Unity フレームワークを使った C 言語向けユニットテスト |
 | `unit_test_with_mock/` | Google Mock を使ったモックテスト |
 | `concepts_generics/` | C++20 Concepts を使った型制約付きジェネリクスライブラリ |
+| `file_io/` | テキストファイルの読み書きサンプルと Google Test によるテスト |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
