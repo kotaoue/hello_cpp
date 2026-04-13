@@ -17,5 +17,6 @@ C++ の学習用リポジトリです。
 | `file_io/` | テキストファイルの読み書きサンプルと Google Test によるテスト |
 | `character_encoding/` | iconv を使った文字コード変換（UTF-8・Shift-JIS・EUC-JP）サンプルと Google Test によるテスト |
 | `lambda/` | ラムダ式の基本・キャプチャ・ジェネリックラムダ・再帰ラムダなどのサンプル集 |
+| `cpp_class/` | コンストラクタ・デストラクタ・継承・ポリモーフィズム・Rule of Five・RAII など C++ クラスの主要機能サンプル |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
