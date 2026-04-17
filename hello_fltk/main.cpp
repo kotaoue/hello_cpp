@@ -5,8 +5,8 @@
 int main(int argc, char *argv[])
 {
     Fl_Window *window = new Fl_Window(640, 480, "Hello World");
-    int box_width = 200;
-    int box_height = 100;
+    int box_width = 240;
+    int box_height = 120;
     Fl_Box *box = new Fl_Box(window->w() / 2 - box_width / 2, window->h() / 2 - box_height / 2, box_width, box_height, "Hello, FLTK!");
     box->labelsize(36);
     box->box(FL_FLAT_BOX);
