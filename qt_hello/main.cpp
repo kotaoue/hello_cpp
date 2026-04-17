@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 
     QLabel label("Hello, World!");
     label.setWindowTitle("Qt Hello World");
-    label.resize(320, 240);
+    label.resize(640, 480);
     label.setAlignment(Qt::AlignCenter);
     label.show();
 
