@@ -8,7 +8,7 @@ C++ の学習用リポジトリです。
 ## サンプル一覧
 
 | ディレクトリ | 内容 |
-|---|---|
+| --- | --- |
 | `helloworld/` | Hello World — C++ の最小構成 |
 | `unit_test/` | Google Test を使ったシンプルなユニットテスト |
 | `unit_test_using_unity/` | Unity フレームワークを使った C 言語向けユニットテスト |
