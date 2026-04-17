@@ -37,7 +37,7 @@ bool convert_encoding(const std::string& input,
 
 ---
 
-## Build & RUn
+## Build & Run
 
 ```bash
 cd character_encoding

@@ -7,7 +7,7 @@ C++ 標準ライブラリの `<fstream>` を使い、Google Test でテストし
 
 ## ディレクトリ構成
 
-```
+```text
 .
 ├── CMakeLists.txt       # ビルド設定（FetchContent で Google Test を取得）
 ├── src/
@@ -31,9 +31,10 @@ bool read_text_file(const std::string& path, std::string& content);
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd file_io
 mkdir build && cd build
 cmake ..
 make
@@ -42,6 +43,6 @@ ctest --output-on-failure
 
 ### 実行結果例
 
-```
+```text
 100% tests passed, 0 tests failed out of 8
 ```

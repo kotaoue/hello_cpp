@@ -7,7 +7,7 @@ libcurl を使って外部 REST API を叩くサンプルです。
 
 ## ディレクトリ構成
 
-```
+```text
 external_api/
 ├── CMakeLists.txt
 ├── include/
@@ -22,7 +22,7 @@ external_api/
 ## 学べること
 
 | テーマ | 内容 |
-|---|---|
+| --- | --- |
 | RAII | `Client` クラスがコンストラクタ/デストラクタで `curl_global_init/cleanup` を管理 |
 | `std::unique_ptr` | CURL ハンドルと `curl_slist` をスマートポインタで管理し、手動解放を排除 |
 | 値型のレスポンス | `struct Response { std::string body; long status_code; }` — ポインタ渡し不要 |
@@ -102,7 +102,7 @@ std::unique_ptr<CURL, CurlEasyDeleter> curl{curl_easy_init()};
 ## 依存ライブラリ
 
 | ライブラリ | 用途 |
-|---|---|
+| --- | --- |
 | [libcurl](https://curl.se/libcurl/) | HTTP リクエストの送受信 |
 
 ### インストール方法
@@ -120,9 +120,10 @@ sudo dnf install libcurl-devel
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd external_api
 mkdir build && cd build
 cmake ..
 make
@@ -133,7 +134,7 @@ make
 
 ## 実行結果の例
 
-```
+```text
 --- GET リクエスト ---
 URL: https://httpbin.org/get
 ステータスコード: 200

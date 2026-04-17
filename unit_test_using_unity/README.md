@@ -4,7 +4,7 @@ A simple unit test sample using [Unity](https://github.com/ThrowTheSwitch/Unity)
 
 ## Structure
 
-```
+```text
 unit_test_using_unity/
 ├── Makefile              # Build and run tests
 ├── src/
@@ -21,6 +21,7 @@ unit_test_using_unity/
 ## Usage
 
 ```bash
+cd unit_test_using_unity
 make
 ```
 
@@ -38,7 +39,7 @@ make clean
 
 ## Example Output
 
-```
+```text
 test/test_calculator.c:52:test_add_positive_numbers:PASS
 test/test_calculator.c:53:test_add_negative_numbers:PASS
 test/test_calculator.c:54:test_add_zero:PASS

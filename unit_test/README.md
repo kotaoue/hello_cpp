@@ -6,7 +6,7 @@ Google Test を使ったシンプルなユニットテストのサンプルで�
 
 ## ディレクトリ構成
 
-```
+```text
 .
 ├── CMakeLists.txt          # ビルド設定（FetchContent で Google Test を取得）
 ├── src/
@@ -34,9 +34,10 @@ TEST(CalculatorAdd, 正の数同士) {
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd unit_test
 mkdir build && cd build
 cmake ..
 make
@@ -45,6 +46,6 @@ ctest --output-on-failure
 
 ### 実行結果例
 
-```
+```text
 100% tests passed, 0 tests failed out of 7
 ```

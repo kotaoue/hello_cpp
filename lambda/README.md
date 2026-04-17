@@ -31,9 +31,10 @@ C++11 で導入されたラムダ式の基本から、C++14 のジェネリッ�
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd lambda
 mkdir build && cd build
 cmake ..
 make
