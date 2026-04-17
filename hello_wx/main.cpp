@@ -23,7 +23,7 @@ bool MyApp::OnInit()
 }
 
 MyFrame::MyFrame()
-    : wxFrame(nullptr, wxID_ANY, "Hello World", wxDefaultPosition, wxSize(640, 480))
+    : wxFrame(nullptr, wxID_ANY, "Hello World", wxDefaultPosition, wxSize(320, 240))
 {
     // 子ウィジェットは親（panel / frame）が所有し、親の破棄時に自動解放される
     wxPanel* panel = new wxPanel(this);
