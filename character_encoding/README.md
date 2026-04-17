@@ -7,7 +7,7 @@
 
 ## ディレクトリ構成
 
-```
+```text
 character_encoding/
 ├── CMakeLists.txt
 ├── README.md
@@ -37,9 +37,10 @@ bool convert_encoding(const std::string& input,
 
 ---
 
-## ビルドと実行
+## Build & RUn
 
 ```bash
+cd character_encoding
 mkdir build && cd build
 cmake ..
 make
@@ -51,7 +52,7 @@ ctest --output-on-failure
 ## テスト内容
 
 | テスト名 | 内容 |
-|---|---|
+| --- | --- |
 | `UTF8ToUTF8ReturnsInput` | UTF-8 → UTF-8 の恒等変換 |
 | `ShiftJISToShiftJISReturnsInput` | Shift-JIS → Shift-JIS の恒等変換 |
 | `UTF8ToShiftJIS` | UTF-8 → Shift-JIS への変換 |
