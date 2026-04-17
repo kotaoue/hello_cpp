@@ -9,5 +9,7 @@ int main(int argc, char *argv[])
     box->labelsize(36);
     window->end();
     window->show(argc, argv);
-    return Fl::run();
+    int ret = Fl::run();
+    delete window;
+    return ret;
 }
