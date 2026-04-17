@@ -23,6 +23,10 @@ static void activate(GtkApplication *app, gpointer /*user_data*/)
 
     GtkWidget *label = gtk_label_new("Hello, World!");
     gtk_label_set_markup(GTK_LABEL(label), "<span foreground='white'>Hello, World!</span>");
+    PangoAttrList *attrs = pango_attr_list_new();
+    pango_attr_list_insert(attrs, pango_attr_scale_new(1.5));
+    gtk_label_set_attributes(GTK_LABEL(label), attrs);
+    pango_attr_list_unref(attrs);
 
 #if GTK_MAJOR_VERSION >= 4
     gtk_window_set_child(GTK_WINDOW(window), label);
