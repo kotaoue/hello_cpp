@@ -43,7 +43,7 @@ mkdir build && cd build
 # macOS で Homebrew の wxWidgets を使う場合、CMake に wxWidgets のパスを渡す必要があります:
 cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix wxwidgets)"
 make
-./wx_hello
+open ./wx_hello.app
 ```
 
 実行すると "Hello, World!" と書かれたウィンドウが表示されます。
