@@ -7,7 +7,7 @@ C++ のテストフレームワーク **Google Test** と、モックフレー�
 
 ## ディレクトリ構成
 
-```
+```text
 unit_test_with_mock/
 ├── .gitignore
 ├── CMakeLists.txt          # ビルド設定（FetchContent で Google Test を取得）
@@ -77,7 +77,7 @@ TEST(ClockGreeting, 朝は_GoodMorning) {
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
 cd unit_test_with_mock
@@ -89,6 +89,6 @@ ctest --output-on-failure
 
 ### 実行結果例
 
-```
+```text
 100% tests passed, 0 tests failed out of 15
 ```
