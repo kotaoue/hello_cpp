@@ -9,6 +9,8 @@
         "FLTK",
         "GLFW",
         "imgui",
+        "labelcolor",
+        "labelsize",
         "libfltk",
         "RAII",
         "SFINAE",
