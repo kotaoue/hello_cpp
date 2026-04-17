@@ -5,9 +5,12 @@
     "dictionaries": [],
     "words": [
         "ctest",
+        "EUCJP",
         "GLFW",
         "imgui",
-        "RAII"
+        "RAII",
+        "SFINAE",
+        "Subtractable"
     ],
     "ignoreWords": [],
     "import": []
