@@ -46,7 +46,7 @@ int main()
         // 新しいフレームを開始
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-        ImGui::SetNextWindowSize(ImVec2(320, 240), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_Always);
         ImGui::NewFrame();
 
         // Hello World ウィンドウ
