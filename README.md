@@ -20,5 +20,6 @@ C++ の学習用リポジトリです。
 | `cpp_class/` | コンストラクタ・デストラクタ・継承・ポリモーフィズム・Rule of Five・RAII など C++ クラスの主要機能サンプル |
 | `qt_hello/` | Qt Widgets を使った Hello World GUI アプリ |
 | `imgui_hello/` | Dear ImGui + GLFW + OpenGL3 を使った Hello World GUI アプリ |
+| `hello_wx/` | wxWidgets を使った Hello World GUI アプリ |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
