@@ -31,6 +31,7 @@ MyFrame::MyFrame()
         panel, wxID_ANY, "Hello, World!",
         wxDefaultPosition, wxDefaultSize,
         wxALIGN_CENTER_HORIZONTAL);
+    panel->SetBackgroundColour(*wxWHITE);
 
     wxFont font = text->GetFont();
     font.SetPointSize(24);
