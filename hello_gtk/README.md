@@ -29,14 +29,6 @@ brew install gtk4
 # brew install gtk+3
 ```
 
-### Ubuntu / Debian
-
-```sh
-sudo apt install libgtk-4-dev cmake
-# GTK3 を使う場合
-# sudo apt install libgtk-3-dev cmake
-```
-
 ---
 
 ## Build & Run
