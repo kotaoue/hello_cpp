@@ -5,6 +5,7 @@
     "dictionaries": [],
     "words": [
         "ctest",
+        "DCMAKE",
         "EUCJP",
         "FLTK",
         "GLFW",
@@ -12,9 +13,11 @@
         "labelcolor",
         "labelsize",
         "libfltk",
+        "libwxgtk",
         "RAII",
         "SFINAE",
-        "Subtractable"
+        "Subtractable",
+        "wxwidgets"
     ],
     "ignoreWords": [],
     "import": []
