@@ -7,7 +7,7 @@ Qt Widgets を使った最小構成の Hello World GUI アプリです。
 
 ## ディレクトリ構成
 
-```
+```text
 qt_hello/
 ├── CMakeLists.txt
 └── main.cpp
