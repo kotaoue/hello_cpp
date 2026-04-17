@@ -6,8 +6,10 @@
     "words": [
         "ctest",
         "EUCJP",
+        "FLTK",
         "GLFW",
         "imgui",
+        "libfltk",
         "RAII",
         "SFINAE",
         "Subtractable"
