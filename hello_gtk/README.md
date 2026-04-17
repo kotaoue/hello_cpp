@@ -39,9 +39,10 @@ sudo apt install libgtk-4-dev cmake
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd hello_gtk
 mkdir build && cd build
 cmake ..
 make
