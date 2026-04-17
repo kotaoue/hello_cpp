@@ -42,3 +42,9 @@ build/
 
 # debug information files
 *.dwo
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
