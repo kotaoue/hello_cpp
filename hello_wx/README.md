@@ -40,16 +40,7 @@ sudo apt install libwxgtk3.2-dev cmake
 ```sh
 cd hello_wx
 mkdir build && cd build
-cmake ..
-make
-./wx_hello
-```
-
-macOS で Homebrew の wxWidgets を使う場合、CMake に wxWidgets のパスを渡す必要があります:
-
-```sh
-cd hello_wx
-mkdir build && cd build
+# macOS で Homebrew の wxWidgets を使う場合、CMake に wxWidgets のパスを渡す必要があります:
 cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix wxwidgets)"
 make
 ./wx_hello
