@@ -18,5 +18,6 @@ C++ の学習用リポジトリです。
 | `character_encoding/` | iconv を使った文字コード変換（UTF-8・Shift-JIS・EUC-JP）サンプルと Google Test によるテスト |
 | `lambda/` | ラムダ式の基本・キャプチャ・ジェネリックラムダ・再帰ラムダなどのサンプル集 |
 | `cpp_class/` | コンストラクタ・デストラクタ・継承・ポリモーフィズム・Rule of Five・RAII など C++ クラスの主要機能サンプル |
+| `qt_hello/` | Qt Widgets を使った Hello World GUI アプリ |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
