@@ -34,9 +34,10 @@ sudo apt install libfltk1.3-dev cmake
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd hello_fltk
 mkdir build && cd build
 cmake ..
 make
