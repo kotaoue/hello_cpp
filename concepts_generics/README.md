@@ -7,7 +7,7 @@ C++20 Concepts を使った型制約付きジェネリクスライブラリの�
 
 ## ディレクトリ構成
 
-```
+```text
 concepts_generics/
 ├── CMakeLists.txt
 ├── include/
@@ -41,7 +41,7 @@ concept Numeric = Addable<T> && Subtractable<T> && std::totally_ordered<T>;
 ```
 
 | Concept | 意味 |
-|---|---|
+| --- | --- |
 | `Printable<T>` | `std::ostream <<` で出力できる型 |
 | `Sortable<T>` | `<` による全順序比較が可能な型 |
 | `Addable<T>` / `Subtractable<T>` | `+` / `-` が使える型 |
@@ -65,7 +65,7 @@ auto sum(const C& container) -> std::ranges::range_value_t<C>;
 ```
 
 | 関数 | 概要 |
-|---|---|
+| --- | --- |
 | `sort_if_sortable(c)` | コンテナをソートして返す |
 | `print_all(c, os, sep)` | 要素を区切り文字付きで出力 |
 | `sum(c)` | 要素の総和を返す |
@@ -92,19 +92,19 @@ C sort_and_return(C container);
 ```
 
 | 比較項目 | Concepts | SFINAE |
-|---|---|---|
+| --- | --- | --- |
 | 宣言の読みやすさ | ◎ 意図が一目瞭然 | △ `enable_if_t` が長くなる |
 | エラーメッセージ | ◎「制約 X を満たさない」と明確 | △ オーバーロード失敗として報告 |
 | 対応バージョン | C++20 以降 | C++11 以降 |
 
 ---
 
-## ビルドと実行
+## Build & Run
 
 ```sh
+cd concepts_generics
 mkdir build && cd build
 cmake ..
 make
 ./concepts_demo
 ```
-
