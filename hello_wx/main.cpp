@@ -35,6 +35,7 @@ MyFrame::MyFrame()
     wxFont font = text->GetFont();
     font.SetPointSize(24);
     text->SetFont(font);
+    text->SetForegroundColour(*wxRED);
 
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     sizer->AddStretchSpacer(1);
