@@ -18,7 +18,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "ImGui Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "ImGui Hello World", nullptr, nullptr);
     if (!window)
     {
         glfwTerminate();
