@@ -3,6 +3,16 @@
 C++ の学習用リポジトリです。  
 各ディレクトリに独立したサンプルプログラムが入っています。
 
+## 要件
+
+- macOS
+- CMake 3.16 以上
+
+```sh
+xcode-select --install
+brew install cmake
+```
+
 ---
 
 ## サンプル一覧

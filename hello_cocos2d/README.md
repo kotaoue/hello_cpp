@@ -26,22 +26,9 @@ hello_cocos2d/
 └── CMakeLists.txt
 ```
 
----
-
-## 要件
-
-- macOS（Xcode コマンドラインツール）
-- [Cocos2d-x v4.0](https://github.com/cocos2d/cocos2d-x/releases/tag/v4.0)
-- CMake 3.16 以上（Homebrew でインストール）
-
-```sh
-xcode-select --install
-brew install cmake
-```
-
----
-
 ## Cocos2d-x の準備
+
+- [Cocos2d-x v4.0](https://github.com/cocos2d/cocos2d-x/releases/tag/v4.0)
 
 このプロジェクトは Cocos2d-x エンジンを外部ディレクトリとして参照します。  
 以下の手順でエンジンを取得してください。
