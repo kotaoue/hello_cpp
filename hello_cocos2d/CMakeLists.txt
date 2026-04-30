@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.16)
+project(HelloCocos2dx CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Cocos2d-x のルートディレクトリ（デフォルト: このディレクトリの隣の cocos2d-x/）
+if(NOT DEFINED COCOS2DX_ROOT_PATH)
+    set(COCOS2DX_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cocos2d-x")
+endif()
+
+set(CMAKE_MODULE_PATH ${COCOS2DX_ROOT_PATH}/cmake/Modules/)
+
+include(CocosBuildSet)
+
+set(BUILD_LUA_LIBS OFF)
+set(BUILD_JS_LIBS OFF)
+
+add_subdirectory(
+    ${COCOS2DX_ROOT_PATH}/cocos
+    ${ENGINE_BINARY_PATH}/cocos/core
+)
+
+set(APP_HEADER_FILES
+    Classes/AppDelegate.h
+    Classes/HelloWorldScene.h
+)
+
+set(APP_SOURCE_FILES
+    Classes/AppDelegate.cpp
+    Classes/HelloWorldScene.cpp
+)
+
+add_executable(${PROJECT_NAME}
+    ${APP_HEADER_FILES}
+    ${APP_SOURCE_FILES}
+)
+
+target_link_libraries(${PROJECT_NAME} cocos2d)
+target_include_directories(${PROJECT_NAME} PRIVATE Classes)
