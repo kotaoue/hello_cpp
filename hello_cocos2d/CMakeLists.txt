@@ -36,5 +36,5 @@ add_executable(${PROJECT_NAME}
     ${APP_SOURCE_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} cocos2d png z)
+target_link_libraries(${PROJECT_NAME} cocos2d external ext_png ext_zlib)
 target_include_directories(${PROJECT_NAME} PRIVATE Classes)
