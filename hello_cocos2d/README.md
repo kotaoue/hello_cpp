@@ -30,27 +30,13 @@ hello_cocos2d/
 
 ## 要件
 
+- macOS（Xcode コマンドラインツール）
 - [Cocos2d-x v4.0](https://github.com/cocos2d/cocos2d-x/releases/tag/v4.0)
-- CMake 3.16 以上
-- C++17 対応コンパイラ（GCC 7+・Clang 5+・MSVC 2017+）
-
-### macOS
+- CMake 3.16 以上（Homebrew でインストール）
 
 ```sh
-# Xcode コマンドラインツール
 xcode-select --install
-# CMake（Homebrew）
 brew install cmake
-```
-
-### Ubuntu / Debian
-
-```sh
-sudo apt update
-sudo apt install build-essential cmake libgl1-mesa-dev libglu1-mesa-dev \
-    libx11-dev libxrandr-dev libxi-dev libxxf86vm-dev \
-    libpng-dev libjpeg-dev libfreetype6-dev zlib1g-dev \
-    libopenal-dev libvorbis-dev libsndfile1-dev
 ```
 
 ---
