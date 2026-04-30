@@ -65,10 +65,4 @@ make -j$(nproc)
 ./HelloCocos2dx
 ```
 
-### Cocos2d-x が別の場所にある場合
-
-```sh
-cmake .. -DCOCOS2DX_ROOT_PATH=/path/to/cocos2d-x
-```
-
 実行すると黒い背景に白字で "Hello, World!" と書かれたウィンドウが表示されます。
