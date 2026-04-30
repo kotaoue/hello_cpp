@@ -38,7 +38,7 @@ hello_cocos2d/
 cd <このリポジトリのルート>
 git clone https://github.com/cocos2d/cocos2d-x.git
 cd cocos2d-x
-git checkout v4.0
+git checkout cocos2d-x-4.0
 # サードパーティライブラリをダウンロード
 python download-deps.py     
 # サブモジュールを初期化
