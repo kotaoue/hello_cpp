@@ -39,10 +39,10 @@ cd <このリポジトリのルート>
 git clone https://github.com/cocos2d/cocos2d-x.git
 cd cocos2d-x
 git checkout cocos2d-x-4.0
-# サードパーティライブラリをダウンロード
-python download-deps.py     
+# Python 3 対応スクリプトでサードパーティライブラリをダウンロード
+python3 download-deps-3.py
 # サブモジュールを初期化
-git submodule update --init  
+git submodule update --init
 ```
 
 実行後のディレクトリ構成：
