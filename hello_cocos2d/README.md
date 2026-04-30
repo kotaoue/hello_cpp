@@ -59,7 +59,7 @@ git submodule update --init
 
 ```sh
 cd hello_cocos2d
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make -j$(nproc)
 ./HelloCocos2dx
