@@ -1,4 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
+
+if(APPLE AND NOT IOS AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64" AND NOT DEFINED CMAKE_OSX_ARCHITECTURES)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE STRING "Build architecture for Cocos2d-x macOS prebuilts" FORCE)
+endif()
+
 project(HelloCocos2dx CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -27,6 +32,7 @@ set(APP_HEADER_FILES
 )
 
 set(APP_SOURCE_FILES
+    main.cpp
     Classes/AppDelegate.cpp
     Classes/HelloWorldScene.cpp
 )
@@ -36,5 +42,5 @@ add_executable(${PROJECT_NAME}
     ${APP_SOURCE_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} cocos2d external ext_png ext_zlib)
+target_link_libraries(${PROJECT_NAME} cocos2d)
 target_include_directories(${PROJECT_NAME} PRIVATE Classes)
