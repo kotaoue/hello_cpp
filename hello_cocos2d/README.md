@@ -36,9 +36,13 @@ hello_cocos2d/
 ```sh
 # hello_cocos2d の隣に cocos2d-x を配置する
 cd <このリポジトリのルート>
-git clone https://github.com/cocos2d/cocos2d-x.git --branch v4.0 --depth 1
+git clone https://github.com/cocos2d/cocos2d-x.git
 cd cocos2d-x
-python3 download-deps.py   # サードパーティライブラリをダウンロード
+git checkout v4.0
+# サードパーティライブラリをダウンロード
+python download-deps.py     
+# サブモジュールを初期化
+git submodule update --init  
 ```
 
 実行後のディレクトリ構成：
