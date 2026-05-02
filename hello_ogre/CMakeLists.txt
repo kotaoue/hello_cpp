@@ -3,6 +3,7 @@ project(ogre_hello CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+option(OGRE_HELLO_REQUIRE_OGRE "Fail configure when OGRE is not found" OFF)
 
 # OGRE CMake package の探索パスを拡張
 set(_OGRE_HINT_PREFIXES
@@ -25,13 +26,20 @@ endforeach()
 find_package(OGRE QUIET CONFIG COMPONENTS Bites RTShaderSystem)
 
 if(NOT OGRE_FOUND)
-    message(FATAL_ERROR
+    string(CONCAT _ogre_message
         "OGRE not found.\n"
         "Tried CMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH}'.\n"
-        "Please install OGRE and re-run CMake with one of:\n"
+        "Install OGRE and re-run with one of:\n"
         "  cmake -DOGRE_DIR=<path-to-OGREConfig.cmake-directory> ..\n"
         "  cmake -DCMAKE_PREFIX_PATH=<ogre-prefix> .."
     )
+
+    if(OGRE_HELLO_REQUIRE_OGRE)
+        message(FATAL_ERROR "${_ogre_message}")
+    else()
+        message(WARNING "${_ogre_message}\nSkipping ogre_hello target.")
+        return()
+    endif()
 endif()
 
 add_executable(ogre_hello main.cpp)

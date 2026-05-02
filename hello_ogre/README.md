@@ -33,8 +33,12 @@ hello_ogre/
 ### macOS（Homebrew）
 
 ```sh
-brew install ogre
+# 利用可能か確認（時期により formula が提供されない場合があります）
+brew search ogre
 ```
+
+Homebrew で OGRE formula が見つからない場合は、OGRE を手動インストールして
+`OGRE_DIR` または `CMAKE_PREFIX_PATH` を指定してください。
 
 ## Build & Run
 
@@ -44,6 +48,25 @@ mkdir -p build && cd build
 cmake ..
 make
 ./ogre_hello
+```
+
+### OGRE の場所を明示して configure
+
+```sh
+cmake -DOGRE_DIR=/path/to/OGREConfig.cmake-directory ..
+# または
+cmake -DCMAKE_PREFIX_PATH=/path/to/ogre-prefix ..
+```
+
+### OGRE がない環境で configure だけ通す
+
+`cmake ..` 実行時に OGRE が見つからない場合、デフォルトでは
+`ogre_hello` ターゲットをスキップして configure を継続します。
+
+OGRE を必須にしたい場合は次を使ってください。
+
+```sh
+cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
 ```
 
 実行すると頂点カラー付きの立方体が回転する OGRE ウィンドウが表示されます。  
