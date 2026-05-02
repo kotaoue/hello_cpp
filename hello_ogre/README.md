@@ -33,12 +33,19 @@ hello_ogre/
 ### macOS（Homebrew）
 
 ```sh
-# 利用可能か確認（時期により formula が提供されない場合があります）
-brew search ogre
+brew install cmake ogre
 ```
 
-Homebrew で OGRE formula が見つからない場合は、OGRE を手動インストールして
-`OGRE_DIR` または `CMAKE_PREFIX_PATH` を指定してください。
+CMake は `brew --prefix ogre` でインストール先を自動検出します。  
+`brew info ogre` で formula が存在するか事前に確認してください。
+
+### Ubuntu / Debian
+
+```sh
+sudo apt install cmake libogre-1.12-dev ogre-1.12-tools
+```
+
+---
 
 ## Build & Run
 
@@ -50,24 +57,40 @@ make
 ./ogre_hello
 ```
 
-### OGRE の場所を明示して configure
+実行すると頂点カラー付きの立方体が回転する OGRE ウィンドウが表示されます。  
+Esc キーを押すかウィンドウを閉じると終了します。
+
+---
+
+## トラブルシューティング
+
+### OGRE が見つからない場合
+
+`cmake ..` で OGRE が見つからない場合、`OGREConfig.cmake` の場所を明示します。
 
 ```sh
-cmake -DOGRE_DIR=/path/to/OGREConfig.cmake-directory ..
+# OGRE のインストール先を確認（macOS の例）
+brew info ogre
+
+# cmake に場所を指定
+cmake -DOGRE_DIR=/opt/homebrew/lib/cmake/OGRE ..
 # または
-cmake -DCMAKE_PREFIX_PATH=/path/to/ogre-prefix ..
+cmake -DCMAKE_PREFIX_PATH=$(brew --prefix ogre) ..
 ```
 
-### OGRE がない環境で configure だけ通す
+Ubuntu では次のように確認できます。
 
-`cmake ..` 実行時に OGRE が見つからない場合、デフォルトでは
-`ogre_hello` ターゲットをスキップして configure を継続します。
+```sh
+find /usr -name "OGREConfig.cmake" 2>/dev/null
+cmake -DOGRE_DIR=<上記のディレクトリパス> ..
+```
 
-OGRE を必須にしたい場合は次を使ってください。
+### OGRE なしで configure だけ通す
+
+OGRE がインストールされていない環境では、デフォルトで `ogre_hello` ターゲットをスキップして configure を継続します。  
+OGRE を必須にしたい（OGRE が見つからない場合にエラーにしたい）場合は次を使ってください。
 
 ```sh
 cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
 ```
 
-実行すると頂点カラー付きの立方体が回転する OGRE ウィンドウが表示されます。  
-Esc キーを押すかウィンドウを閉じると終了します。
