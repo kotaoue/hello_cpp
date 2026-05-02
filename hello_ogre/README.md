@@ -26,18 +26,40 @@ hello_ogre/
 
 ## 要件
 
+* macOS（Apple Silicon / Intel）
 * CMake 3.16 以上
 * OGRE 1.12 以上（OgreBites・RTShaderSystem コンポーネントを含む）
-* OpenGL 対応グラフィックドライバー
 
-### macOS（Homebrew）
+---
+
+## OGRE のインストール（ソースビルド）
+
+Homebrew に `ogre` formula は存在しないため、ソースからビルドします。
+
+### 1. 依存ライブラリを Homebrew でインストール
 
 ```sh
-brew install cmake ogre
+brew install cmake sdl2 freetype freeimage
 ```
 
-CMake は `brew --prefix ogre` でインストール先を自動検出します。  
-`brew info ogre` で formula が存在するか事前に確認してください。
+### 2. OGRE ソースを取得
+
+```sh
+git clone --recurse-submodules https://github.com/OGRECave/ogre.git
+cd ogre
+```
+
+### 3. ビルドとインストール
+
+```sh
+mkdir build && cd build
+cmake .. \
+  -DCMAKE_INSTALL_PREFIX=$HOME/ogre-dist \
+  -DOGRE_BUILD_COMPONENT_BITES=ON \
+  -DOGRE_BUILD_COMPONENT_RTSHADERSYSTEM=ON
+cmake --build . --config Release
+cmake --install .
+```
 
 ---
 
@@ -46,7 +68,7 @@ CMake は `brew --prefix ogre` でインストール先を自動検出します�
 ```sh
 cd hello_ogre
 mkdir -p build && cd build
-cmake ..
+cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
 make
 ./ogre_hello
 ```
@@ -60,16 +82,18 @@ Esc キーを押すかウィンドウを閉じると終了します。
 
 ### OGRE が見つからない場合
 
-`cmake ..` で OGRE が見つからない場合、`OGREConfig.cmake` の場所を明示します。
+`cmake ..` で OGRE が見つからない場合、インストール先を明示します。
 
 ```sh
-# OGRE のインストール先を確認（macOS の例）
-brew info ogre
-
-# cmake に場所を指定
-cmake -DOGRE_DIR=/opt/homebrew/lib/cmake/OGRE ..
+cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
 # または
-cmake -DCMAKE_PREFIX_PATH=$(brew --prefix ogre) ..
+cmake -DOGRE_DIR=$HOME/ogre-dist/lib/cmake/OGRE ..
+```
+
+インストール先を確認するには次を実行してください。
+
+```sh
+find $HOME/ogre-dist -name "OGREConfig.cmake"
 ```
 
 ### OGRE なしで configure だけ通す
@@ -80,3 +104,4 @@ OGRE を必須にしたい（OGRE が見つからない場合にエラーにし�
 ```sh
 cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
 ```
+

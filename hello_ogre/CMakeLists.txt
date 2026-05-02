@@ -14,28 +14,12 @@ foreach(_env_var OGRE_DIR OGRE_HOME)
     endif()
 endforeach()
 
-if(APPLE)
-    # macOS (Homebrew): brew --prefix ogre で正確なインストール先を取得
-    execute_process(
-        COMMAND brew --prefix ogre
-        OUTPUT_VARIABLE _brew_ogre_prefix
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_VARIABLE _brew_error
-        RESULT_VARIABLE _brew_result
-    )
-    if(_brew_result EQUAL 0 AND NOT _brew_ogre_prefix STREQUAL "")
-        list(APPEND CMAKE_PREFIX_PATH "${_brew_ogre_prefix}")
-        message(STATUS "Homebrew OGRE prefix: ${_brew_ogre_prefix}")
-    elseif(_brew_error)
-        message(STATUS "brew --prefix ogre: ${_brew_error}")
-    endif()
-elseif(UNIX)
-    # Ubuntu / Debian: アーキテクチャ別ライブラリディレクトリを追加
-    list(APPEND CMAKE_PREFIX_PATH
-        "/usr/lib/x86_64-linux-gnu"
-        "/usr/lib/aarch64-linux-gnu"
-    )
-endif()
+# macOS ソースビルド時の一般的なインストール先を追加
+list(APPEND CMAKE_PREFIX_PATH
+    "$ENV{HOME}/ogre-dist"
+    "/usr/local"
+    "/opt/ogre"
+)
 
 find_package(OGRE QUIET CONFIG COMPONENTS Bites RTShaderSystem)
 
