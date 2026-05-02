@@ -39,12 +39,6 @@ brew install cmake ogre
 CMake は `brew --prefix ogre` でインストール先を自動検出します。  
 `brew info ogre` で formula が存在するか事前に確認してください。
 
-### Ubuntu / Debian
-
-```sh
-sudo apt install cmake libogre-1.12-dev ogre-1.12-tools
-```
-
 ---
 
 ## Build & Run
@@ -78,13 +72,6 @@ cmake -DOGRE_DIR=/opt/homebrew/lib/cmake/OGRE ..
 cmake -DCMAKE_PREFIX_PATH=$(brew --prefix ogre) ..
 ```
 
-Ubuntu では次のように確認できます。
-
-```sh
-find /usr -name "OGREConfig.cmake" 2>/dev/null
-cmake -DOGRE_DIR=<上記のディレクトリパス> ..
-```
-
 ### OGRE なしで configure だけ通す
 
 OGRE がインストールされていない環境では、デフォルトで `ogre_hello` ターゲットをスキップして configure を継続します。  
@@ -93,4 +80,3 @@ OGRE を必須にしたい（OGRE が見つからない場合にエラーにし�
 ```sh
 cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
 ```
-
