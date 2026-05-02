@@ -36,23 +36,11 @@ hello_ogre/
 brew install ogre
 ```
 
-### Ubuntu / Debian
-
-```sh
-sudo apt install libogre-1.12-dev ogre-1.12-tools
-```
-
-> **Note:** Ubuntu 24.04 以降では `libogre-1.12-dev` の代わりに  
-> `libogre-next-dev`（OGRE 2.x）が提供される場合があります。  
-> パッケージ名が変わっていても CMakeLists.txt で OGRE が見つかれば問題ありません。
-
----
-
 ## Build & Run
 
 ```sh
 cd hello_ogre
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./ogre_hello
