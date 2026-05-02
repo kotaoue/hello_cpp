@@ -26,15 +26,14 @@ hello_ogre/
 
 ## 要件
 
-- CMake 3.16 以上
-- OGRE 1.12 以上（OgreBites・RTShaderSystem コンポーネントを含む）
-- OpenGL 対応グラフィックドライバー
+* CMake 3.16 以上
+* OGRE 1.12 以上（OgreBites・RTShaderSystem コンポーネントを含む）
+* OpenGL 対応グラフィックドライバー
 
 ### macOS（Homebrew）
 
 ```sh
 brew install ogre
-brew install cmake        # 未インストールの場合
 ```
 
 ### Ubuntu / Debian
