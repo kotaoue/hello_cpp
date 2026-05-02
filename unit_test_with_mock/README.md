@@ -81,7 +81,7 @@ TEST(ClockGreeting, 朝は_GoodMorning) {
 
 ```sh
 cd unit_test_with_mock
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ctest --output-on-failure

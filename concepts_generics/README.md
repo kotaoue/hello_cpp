@@ -103,7 +103,7 @@ C sort_and_return(C container);
 
 ```sh
 cd concepts_generics
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./concepts_demo

@@ -124,7 +124,7 @@ sudo dnf install libcurl-devel
 
 ```sh
 cd external_api
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./external_api_demo

@@ -51,7 +51,7 @@ sudo apt install cmake libgl1-mesa-dev libxrandr-dev libxinerama-dev \
 
 ```sh
 cd hello_imgui
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./imgui_hello

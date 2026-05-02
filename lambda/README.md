@@ -35,7 +35,7 @@ C++11 で導入されたラムダ式の基本から、C++14 のジェネリッ�
 
 ```sh
 cd lambda
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./lambda_demo
