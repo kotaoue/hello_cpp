@@ -38,7 +38,7 @@ TEST(CalculatorAdd, 正の数同士) {
 
 ```sh
 cd unit_test
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ctest --output-on-failure

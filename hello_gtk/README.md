@@ -45,7 +45,7 @@ brew install gtk4
 
 ```sh
 cd hello_gtk
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./gtk_hello

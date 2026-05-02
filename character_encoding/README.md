@@ -41,7 +41,7 @@ bool convert_encoding(const std::string& input,
 
 ```bash
 cd character_encoding
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ctest --output-on-failure

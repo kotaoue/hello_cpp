@@ -35,7 +35,7 @@ bool read_text_file(const std::string& path, std::string& content);
 
 ```sh
 cd file_io
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ctest --output-on-failure

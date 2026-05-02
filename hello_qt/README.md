@@ -50,7 +50,7 @@ sudo apt install qt6-base-dev cmake
 
 ```sh
 cd hello_qt
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 ./qt_hello
@@ -60,7 +60,7 @@ macOS で Homebrew の Qt を使う場合、CMake に Qt のパスを渡す必�
 
 ```sh
 cd hello_qt
-mkdir build && cd build
+mkdir -p build && cd build
 cmake .. -DCMAKE_PREFIX_PATH="$(brew --prefix qt)"
 make
 ./qt_hello

@@ -122,7 +122,7 @@ Buffer b3(std::move(b1));  // b1 は empty() になる
 
 ```sh
 cd cpp_class
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ..
 make
 
