@@ -62,6 +62,10 @@ cd ../../
 cd hello_ogre
 mkdir -p build && cd build
 cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
-make
-./ogre_hello
+make && ./ogre_hello
 ```
+
+### 備考
+
+`cmake` 実行時に `hello_ogre/plugins.cfg.in` から `build/plugins.cfg` を自動生成します。  
+そのため、`$HOME/ogre-dist/bin/plugins.cfg` を手動で編集する必要はありません。

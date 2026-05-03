@@ -42,5 +42,19 @@ endif()
 
 add_executable(ogre_hello main.cpp)
 
+# plugins.cfg を生成してビルドディレクトリに配置
+# OGRE のプラグイン実体がある RelWithDebInfo/ を優先し、なければ lib/OGRE/ にフォールバック
+if(EXISTS "${OGRE_PREFIX_DIR}/lib/RelWithDebInfo")
+    set(OGRE_PLUGIN_DIR "${OGRE_PREFIX_DIR}/lib/RelWithDebInfo")
+else()
+    set(OGRE_PLUGIN_DIR "${OGRE_PREFIX_DIR}/lib/OGRE")
+endif()
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/plugins.cfg.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/plugins.cfg"
+    @ONLY
+)
+
+
 target_include_directories(ogre_hello PRIVATE ${OGRE_INCLUDE_DIRS})
 target_link_libraries(ogre_hello PRIVATE OgreMain OgreBites OgreRTShaderSystem)
