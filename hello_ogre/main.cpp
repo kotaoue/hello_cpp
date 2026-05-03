@@ -69,11 +69,13 @@ public:
         // 環境光（全体照明）
         scnMgr->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f));
 
-        // 両面描画マテリアルを作成（BaseWhiteNoLighting をベースに）
-        Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
-                                    .getByName("BaseWhiteNoLighting")
-                                    ->clone("CubeNoCull");
-        mat->getTechnique(0)->getPass(0)->setCullingMode(Ogre::CULL_NONE);
+        // 頂点カラーを確実に使うマテリアルを新規作成
+        Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton().create(
+            "CubeNoCull", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+        Ogre::Pass *cubePass = mat->getTechnique(0)->getPass(0);
+        cubePass->setLightingEnabled(false);
+        cubePass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+        cubePass->setCullingMode(Ogre::CULL_NONE);
 
         // ManualObject で頂点カラー付き立方体を作成
         Ogre::ManualObject *cube = scnMgr->createManualObject("Cube");
