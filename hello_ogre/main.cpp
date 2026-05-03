@@ -183,6 +183,78 @@ public:
     }
 };
 
+// 背景に自動生成オーロラを描く FrameListener
+class AuroraBackground : public Ogre::FrameListener
+{
+    Ogre::ManualObject *mAurora;
+    float mTime;
+
+    static constexpr int kSegments = 56;
+
+    void buildAurora(bool isUpdate)
+    {
+        if (isUpdate)
+            mAurora->beginUpdate(0);
+        else
+            mAurora->begin("AuroraMat", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+
+        for (int i = 0; i <= kSegments; ++i)
+        {
+            const float u = static_cast<float>(i) / static_cast<float>(kSegments);
+            const float x = -8.0f + (16.0f * u);
+
+            const float waveA = std::sin((x * 0.65f) + (mTime * 0.8f));
+            const float waveB = std::sin((x * 1.35f) - (mTime * 1.2f));
+            const float wave = (waveA * 0.7f) + (waveB * 0.3f);
+
+            const float z = -7.0f + (0.35f * std::sin((x * 0.55f) + (mTime * 0.45f)));
+            const float topY = 3.5f + (wave * 0.85f);
+            const float bottomY = 0.2f + (wave * 0.2f);
+
+            // 上側（明るめ）
+            mAurora->position(x, topY, z);
+            mAurora->colour(0.2f + (0.2f * u), 0.95f, 0.75f, 0.22f);
+
+            // 下側（薄め）
+            mAurora->position(x, bottomY, z);
+            mAurora->colour(0.15f, 0.55f + (0.25f * u), 1.0f, 0.05f);
+        }
+
+        mAurora->end();
+    }
+
+public:
+    AuroraBackground(Ogre::SceneManager *scnMgr, Ogre::SceneNode *parentNode)
+        : mAurora(nullptr), mTime(0.0f)
+    {
+        Ogre::MaterialPtr auroraMat =
+            Ogre::MaterialManager::getSingleton().getByName("AuroraMat");
+        if (auroraMat.isNull())
+        {
+            auroraMat = Ogre::MaterialManager::getSingleton().create(
+                "AuroraMat", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+            Ogre::Pass *pass = auroraMat->getTechnique(0)->getPass(0);
+            pass->setLightingEnabled(false);
+            pass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+            pass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+            pass->setDepthWriteEnabled(false);
+            pass->setCullingMode(Ogre::CULL_NONE);
+        }
+
+        mAurora = scnMgr->createManualObject("AuroraCurtain");
+        mAurora->setDynamic(true);
+        buildAurora(false);
+        parentNode->attachObject(mAurora);
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mTime += evt.timeSinceLastFrame;
+        buildAurora(true);
+        return true;
+    }
+};
+
 class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
@@ -192,6 +264,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
     std::unique_ptr<BallOrbiter> mBallOrbiter2;
     std::unique_ptr<BallOrbiter> mBallOrbiter3;
     std::unique_ptr<SparkleTrail> mSparkleTrail;
+    std::unique_ptr<AuroraBackground> mAuroraBackground;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -236,6 +309,12 @@ public:
 
         // 環境光（全体照明）
         scnMgr->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f));
+
+        // 背景オーロラ
+        Ogre::SceneNode *auroraNode =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        mAuroraBackground = std::make_unique<AuroraBackground>(scnMgr, auroraNode);
+        root->addFrameListener(mAuroraBackground.get());
 
         // 頂点カラーを確実に使うマテリアルを新規作成
         Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton().create(
