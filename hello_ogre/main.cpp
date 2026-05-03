@@ -228,69 +228,79 @@ public:
         cubePass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
         cubePass->setCullingMode(Ogre::CULL_NONE);
 
+        // キューブだけ半透明にする専用マテリアル
+        Ogre::MaterialPtr cubeTransparentMat = Ogre::MaterialManager::getSingleton().create(
+            "CubeTransparent", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+        Ogre::Pass *cubeTransparentPass = cubeTransparentMat->getTechnique(0)->getPass(0);
+        cubeTransparentPass->setLightingEnabled(false);
+        cubeTransparentPass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+        cubeTransparentPass->setCullingMode(Ogre::CULL_NONE);
+        cubeTransparentPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+        cubeTransparentPass->setDepthWriteEnabled(false);
+
         // ManualObject で頂点カラー付き立方体を作成
         Ogre::ManualObject *cube = scnMgr->createManualObject("Cube");
-        cube->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+        cube->begin("CubeTransparent", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 
         // 前面 (z = +0.5)
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f, 0.28f);
         cube->position(0.5f, -0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f, 0.28f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f, 0.28f);
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f, 0.28f);
 
         // 背面 (z = -0.5)
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f, 0.28f);
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f, 0.28f);
         cube->position(-0.5f, 0.5f, -0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f, 0.28f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f, 0.28f);
 
         // 上面 (y = +0.5)
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 1.0f, 0.28f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 1.0f, 0.28f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 1.0f, 0.28f);
         cube->position(-0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 1.0f, 0.28f);
 
         // 下面 (y = -0.5)
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f, 0.28f);
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f, 0.28f);
         cube->position(0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f, 0.28f);
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f, 0.28f);
 
         // 右面 (x = +0.5)
         cube->position(0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f, 0.28f);
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f, 0.28f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f, 0.28f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f, 0.28f);
 
         // 左面 (x = -0.5)
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 0.5f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f, 0.28f);
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 0.5f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f, 0.28f);
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 0.5f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f, 0.28f);
         cube->position(-0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 0.5f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f, 0.28f);
 
         // 各面 2 三角形 × 6 面のインデックス
         for (Ogre::uint32 i = 0; i < 6; ++i)
@@ -309,6 +319,44 @@ public:
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
         cubeNode->setScale(1.0f, 1.0f, 1.0f);
+
+        // キューブ内部に正三角錐（四面体）を配置
+        Ogre::ManualObject *tetra = scnMgr->createManualObject("InnerTetra");
+        tetra->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+        const Ogre::Vector3 t0(0.0f, 0.6f, 0.0f);
+        const Ogre::Vector3 t1(-0.55f, -0.3f, 0.45f);
+        const Ogre::Vector3 t2(0.55f, -0.3f, 0.45f);
+        const Ogre::Vector3 t3(0.0f, -0.3f, -0.6f);
+
+        auto addTetraFace = [&](const Ogre::Vector3 &a, const Ogre::Vector3 &b,
+                                const Ogre::Vector3 &c, const Ogre::ColourValue &col)
+        {
+            tetra->position(a);
+            tetra->colour(col);
+            tetra->position(b);
+            tetra->colour(col);
+            tetra->position(c);
+            tetra->colour(col);
+        };
+
+        addTetraFace(t0, t1, t2, Ogre::ColourValue(1.0f, 0.2f, 0.2f));
+        addTetraFace(t0, t2, t3, Ogre::ColourValue(0.2f, 1.0f, 0.2f));
+        addTetraFace(t0, t3, t1, Ogre::ColourValue(0.2f, 0.6f, 1.0f));
+        addTetraFace(t1, t3, t2, Ogre::ColourValue(1.0f, 1.0f, 0.2f));
+
+        for (Ogre::uint32 i = 0; i < 4; ++i)
+        {
+            Ogre::uint32 base = i * 3;
+            tetra->index(base);
+            tetra->index(base + 1);
+            tetra->index(base + 2);
+        }
+        tetra->end();
+
+        Ogre::SceneNode *tetraNode = cubeNode->createChildSceneNode();
+        tetraNode->setScale(0.55f, 0.55f, 0.55f);
+        tetraNode->attachObject(tetra);
 
         // 低分割の球体 ManualObject を作成するヘルパー
         auto createBall = [&](const Ogre::String &name, const Ogre::ColourValue &color)
