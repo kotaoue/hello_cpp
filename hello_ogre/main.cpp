@@ -436,24 +436,24 @@ public:
         const Ogre::Vector3 b1(half, floorY, -half);
         const Ogre::Vector3 b2(half, floorY, half);
         const Ogre::Vector3 b3(-half, floorY, half);
-        const Ogre::Vector3 t0(-half, ceilY, -half);
-        const Ogre::Vector3 t1(half, ceilY, -half);
-        const Ogre::Vector3 t2(half, ceilY, half);
-        const Ogre::Vector3 t3(-half, ceilY, half);
+        const Ogre::Vector3 top0(-half, ceilY, -half);
+        const Ogre::Vector3 top1(half, ceilY, -half);
+        const Ogre::Vector3 top2(half, ceilY, half);
+        const Ogre::Vector3 top3(-half, ceilY, half);
         const Ogre::ColourValue borderCol(0.4f, 0.9f, 1.0f, 0.22f);
 
         addLine(b0, b1, borderCol);
         addLine(b1, b2, borderCol);
         addLine(b2, b3, borderCol);
         addLine(b3, b0, borderCol);
-        addLine(t0, t1, borderCol);
-        addLine(t1, t2, borderCol);
-        addLine(t2, t3, borderCol);
-        addLine(t3, t0, borderCol);
-        addLine(b0, t0, borderCol);
-        addLine(b1, t1, borderCol);
-        addLine(b2, t2, borderCol);
-        addLine(b3, t3, borderCol);
+        addLine(top0, top1, borderCol);
+        addLine(top1, top2, borderCol);
+        addLine(top2, top3, borderCol);
+        addLine(top3, top0, borderCol);
+        addLine(b0, top0, borderCol);
+        addLine(b1, top1, borderCol);
+        addLine(b2, top2, borderCol);
+        addLine(b3, top3, borderCol);
 
         // 床グリッド
         const Ogre::ColourValue gridCol(0.3f, 0.6f, 1.0f, 0.14f);
