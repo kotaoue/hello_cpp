@@ -65,30 +65,3 @@ cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
 make
 ./ogre_hello
 ```
-
-## トラブルシューティング
-
-### OGRE が見つからない場合
-
-`cmake ..` で OGRE が見つからない場合、インストール先を明示します。
-
-```sh
-cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
-# または
-cmake -DOGRE_DIR=$HOME/ogre-dist/lib/cmake/OGRE ..
-```
-
-インストール先を確認するには次を実行してください。
-
-```sh
-find $HOME/ogre-dist -name "OGREConfig.cmake"
-```
-
-### OGRE なしで configure だけ通す
-
-OGRE がインストールされていない環境では、デフォルトで `ogre_hello` ターゲットをスキップして configure を継続します。  
-OGRE を必須にしたい（OGRE が見つからない場合にエラーにしたい）場合は次を使ってください。
-
-```sh
-cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
-```
