@@ -39,20 +39,14 @@ Homebrew に `ogre` formula は存在しないため、ソースからビルド�
 ### 1. 依存ライブラリを Homebrew でインストール
 
 ```sh
+# 依存ライブラリのインストール
 brew install cmake sdl2 freetype freeimage
-```
 
-### 2. OGRE ソースを取得
-
-```sh
+# OGREのビルド
 git clone --recurse-submodules https://github.com/OGRECave/ogre.git
 cd ogre
-```
 
-### 3. ビルドとインストール
-
-```sh
-mkdir build && cd build
+mkdir build -p && cd build
 cmake .. \
   -DCMAKE_INSTALL_PREFIX=$HOME/ogre-dist \
   -DOGRE_BUILD_COMPONENT_BITES=ON \
@@ -104,4 +98,3 @@ OGRE を必須にしたい（OGRE が見つからない場合にエラーにし�
 ```sh
 cmake -DOGRE_HELLO_REQUIRE_OGRE=ON ..
 ```
-
