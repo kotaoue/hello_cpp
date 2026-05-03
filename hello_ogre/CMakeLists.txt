@@ -40,7 +40,10 @@ if(NOT OGRE_FOUND)
     endif()
 endif()
 
-add_executable(ogre_hello main.cpp)
+add_executable(ogre_hello
+    main.cpp
+    src/scene_components.cpp
+)
 
 # plugins.cfg を生成してビルドディレクトリに配置
 # OGRE のプラグイン実体がある RelWithDebInfo/ を優先し、なければ lib/OGRE/ にフォールバック
@@ -56,5 +59,8 @@ configure_file(
 )
 
 
-target_include_directories(ogre_hello PRIVATE ${OGRE_INCLUDE_DIRS})
+target_include_directories(ogre_hello PRIVATE
+    ${OGRE_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 target_link_libraries(ogre_hello PRIVATE OgreMain OgreBites OgreRTShaderSystem)
