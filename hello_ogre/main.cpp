@@ -81,63 +81,63 @@ public:
 
         // 前面 (z = +0.5)
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f);
         cube->position(0.5f, -0.5f, 0.5f);
         cube->colour(0.0f, 1.0f, 0.0f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 1.0f, 0.0f);
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(0.0f, 1.0f, 0.0f);
 
         // 背面 (z = -0.5)
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f);
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f);
         cube->position(-0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(0.0f, 0.0f, 1.0f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(0.5f, 0.5f, 0.0f);
+        cube->colour(0.0f, 0.0f, 1.0f);
 
         // 上面 (y = +0.5)
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 1.0f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 1.0f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(0.5f, 0.5f, 0.0f);
+        cube->colour(1.0f, 1.0f, 1.0f);
         cube->position(-0.5f, 0.5f, -0.5f);
         cube->colour(1.0f, 1.0f, 1.0f);
 
         // 下面 (y = -0.5)
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 0.0f);
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 1.0f, 0.0f);
         cube->position(0.5f, -0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f);
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 1.0f, 0.0f);
 
         // 右面 (x = +0.5)
         cube->position(0.5f, -0.5f, 0.5f);
-        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f);
         cube->position(0.5f, -0.5f, -0.5f);
-        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 0.0f, 0.0f);
         cube->position(0.5f, 0.5f, -0.5f);
-        cube->colour(0.5f, 0.5f, 0.0f);
+        cube->colour(1.0f, 0.0f, 0.0f);
         cube->position(0.5f, 0.5f, 0.5f);
-        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->colour(1.0f, 0.0f, 0.0f);
 
         // 左面 (x = -0.5)
         cube->position(-0.5f, -0.5f, -0.5f);
-        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->colour(1.0f, 0.5f, 0.0f);
         cube->position(-0.5f, -0.5f, 0.5f);
-        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f);
         cube->position(-0.5f, 0.5f, 0.5f);
-        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->colour(1.0f, 0.5f, 0.0f);
         cube->position(-0.5f, 0.5f, -0.5f);
-        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->colour(1.0f, 0.5f, 0.0f);
 
         // 各面 2 三角形 × 6 面のインデックス
         for (Ogre::uint32 i = 0; i < 6; ++i)
