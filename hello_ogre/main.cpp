@@ -20,10 +20,26 @@ public:
     }
 };
 
+// キューブ中心を基準に、ボールを逆回転で周回させる FrameListener
+class BallOrbiter : public Ogre::FrameListener
+{
+    Ogre::SceneNode *mOrbitNode;
+
+public:
+    explicit BallOrbiter(Ogre::SceneNode *orbitNode) : mOrbitNode(orbitNode) {}
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mOrbitNode->yaw(Ogre::Radian(-evt.timeSinceLastFrame * 1.2f));
+        return true;
+    }
+};
+
 class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
     std::unique_ptr<CubeRotator> mRotator;
+    std::unique_ptr<BallOrbiter> mBallOrbiter;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -159,9 +175,64 @@ public:
         cubeNode->attachObject(cube);
         cubeNode->setScale(0.6f, 0.6f, 0.6f);
 
+        // 低分割の球体 ManualObject を作成
+        Ogre::ManualObject *ball = scnMgr->createManualObject("Ball");
+        ball->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+        const int stacks = 12;
+        const int slices = 18;
+        for (int i = 0; i <= stacks; ++i)
+        {
+            const float v = static_cast<float>(i) / static_cast<float>(stacks);
+            const float phi = Ogre::Math::PI * v;
+            const float y = std::cos(phi);
+            const float r = std::sin(phi);
+
+            for (int j = 0; j <= slices; ++j)
+            {
+                const float u = static_cast<float>(j) / static_cast<float>(slices);
+                const float theta = Ogre::Math::TWO_PI * u;
+                const float x = r * std::cos(theta);
+                const float z = r * std::sin(theta);
+
+                ball->position(0.5f * x, 0.5f * y, 0.5f * z);
+                ball->colour(1.0f, 1.0f, 1.0f);
+            }
+        }
+
+        for (int i = 0; i < stacks; ++i)
+        {
+            for (int j = 0; j < slices; ++j)
+            {
+                const int row1 = i * (slices + 1);
+                const int row2 = (i + 1) * (slices + 1);
+                const Ogre::uint32 a = static_cast<Ogre::uint32>(row1 + j);
+                const Ogre::uint32 b = static_cast<Ogre::uint32>(row1 + j + 1);
+                const Ogre::uint32 c = static_cast<Ogre::uint32>(row2 + j);
+                const Ogre::uint32 d = static_cast<Ogre::uint32>(row2 + j + 1);
+
+                ball->index(a);
+                ball->index(c);
+                ball->index(b);
+                ball->index(b);
+                ball->index(c);
+                ball->index(d);
+            }
+        }
+        ball->end();
+
+        // キューブ中心を公転中心にした周回ノードを作り、ボールを配置
+        Ogre::SceneNode *orbitNode =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        Ogre::SceneNode *ballNode = orbitNode->createChildSceneNode();
+        ballNode->setPosition(2.0f, 0.0f, 0.0f);
+        ballNode->setScale(0.3f, 0.3f, 0.3f);
+        ballNode->attachObject(ball);
+
         // 回転アニメーションを登録
         mRotator = std::make_unique<CubeRotator>(cubeNode);
         root->addFrameListener(mRotator.get());
+        mBallOrbiter = std::make_unique<BallOrbiter>(orbitNode);
+        root->addFrameListener(mBallOrbiter.get());
     }
 
     bool keyPressed(const OgreBites::KeyboardEvent &evt) override
