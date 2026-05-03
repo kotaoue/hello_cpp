@@ -21,6 +21,22 @@ public:
     }
 };
 
+// 四面体専用の回転アニメーション（キューブと逆向き・別軸）
+class TetraRotator : public Ogre::FrameListener
+{
+    Ogre::SceneNode *mNode;
+
+public:
+    explicit TetraRotator(Ogre::SceneNode *node) : mNode(node) {}
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mNode->yaw(Ogre::Radian(-evt.timeSinceLastFrame * 1.1f));
+        mNode->roll(Ogre::Radian(evt.timeSinceLastFrame * 0.9f));
+        return true;
+    }
+};
+
 // キューブ中心を基準に、ボールを逆回転で周回させる FrameListener
 class BallOrbiter : public Ogre::FrameListener
 {
@@ -171,6 +187,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
     std::unique_ptr<CubeRotator> mRotator;
+    std::unique_ptr<TetraRotator> mTetraRotator;
     std::unique_ptr<BallOrbiter> mBallOrbiter;
     std::unique_ptr<BallOrbiter> mBallOrbiter2;
     std::unique_ptr<BallOrbiter> mBallOrbiter3;
@@ -443,6 +460,8 @@ public:
         // 回転アニメーションを登録
         mRotator = std::make_unique<CubeRotator>(cubeNode);
         root->addFrameListener(mRotator.get());
+        mTetraRotator = std::make_unique<TetraRotator>(tetraNode);
+        root->addFrameListener(mTetraRotator.get());
         mBallOrbiter = std::make_unique<BallOrbiter>(orbitNode, -1.2f);
         root->addFrameListener(mBallOrbiter.get());
         mBallOrbiter2 = std::make_unique<BallOrbiter>(orbitNode2, -0.9f);
