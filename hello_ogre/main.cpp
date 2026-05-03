@@ -406,6 +406,74 @@ public:
         mAuroraBackground = std::make_unique<AuroraBackground>(scnMgr, auroraNode);
         root->addFrameListener(mAuroraBackground.get());
 
+        // カメラ移動を把握しやすくするためのフィールド外枠と床グリッド
+        Ogre::MaterialPtr fieldLineMat = Ogre::MaterialManager::getSingleton().create(
+            "FieldLineMat", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+        Ogre::Pass *fieldLinePass = fieldLineMat->getTechnique(0)->getPass(0);
+        fieldLinePass->setLightingEnabled(false);
+        fieldLinePass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+        fieldLinePass->setCullingMode(Ogre::CULL_NONE);
+        fieldLinePass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+        fieldLinePass->setDepthWriteEnabled(false);
+
+        Ogre::ManualObject *fieldCage = scnMgr->createManualObject("FieldCage");
+        fieldCage->begin("FieldLineMat", Ogre::RenderOperation::OT_LINE_LIST);
+
+        auto addLine = [&](const Ogre::Vector3 &a, const Ogre::Vector3 &b, const Ogre::ColourValue &col)
+        {
+            fieldCage->position(a);
+            fieldCage->colour(col);
+            fieldCage->position(b);
+            fieldCage->colour(col);
+        };
+
+        const float half = 12.0f;
+        const float floorY = -2.0f;
+        const float ceilY = 6.0f;
+
+        // 外枠（直方体）
+        const Ogre::Vector3 b0(-half, floorY, -half);
+        const Ogre::Vector3 b1(half, floorY, -half);
+        const Ogre::Vector3 b2(half, floorY, half);
+        const Ogre::Vector3 b3(-half, floorY, half);
+        const Ogre::Vector3 t0(-half, ceilY, -half);
+        const Ogre::Vector3 t1(half, ceilY, -half);
+        const Ogre::Vector3 t2(half, ceilY, half);
+        const Ogre::Vector3 t3(-half, ceilY, half);
+        const Ogre::ColourValue borderCol(0.4f, 0.9f, 1.0f, 0.22f);
+
+        addLine(b0, b1, borderCol);
+        addLine(b1, b2, borderCol);
+        addLine(b2, b3, borderCol);
+        addLine(b3, b0, borderCol);
+        addLine(t0, t1, borderCol);
+        addLine(t1, t2, borderCol);
+        addLine(t2, t3, borderCol);
+        addLine(t3, t0, borderCol);
+        addLine(b0, t0, borderCol);
+        addLine(b1, t1, borderCol);
+        addLine(b2, t2, borderCol);
+        addLine(b3, t3, borderCol);
+
+        // 床グリッド
+        const Ogre::ColourValue gridCol(0.3f, 0.6f, 1.0f, 0.14f);
+        for (int i = -12; i <= 12; ++i)
+        {
+            const float s = static_cast<float>(i);
+            addLine(Ogre::Vector3(s, floorY, -half), Ogre::Vector3(s, floorY, half), gridCol);
+            addLine(Ogre::Vector3(-half, floorY, s), Ogre::Vector3(half, floorY, s), gridCol);
+        }
+
+        // 方角が分かりやすいガイド線
+        addLine(Ogre::Vector3(0.0f, floorY, -half), Ogre::Vector3(0.0f, ceilY, -half), Ogre::ColourValue(1.0f, 0.4f, 0.4f, 0.28f));
+        addLine(Ogre::Vector3(half, floorY, 0.0f), Ogre::Vector3(half, ceilY, 0.0f), Ogre::ColourValue(0.4f, 1.0f, 0.4f, 0.28f));
+        addLine(Ogre::Vector3(0.0f, floorY, half), Ogre::Vector3(0.0f, ceilY, half), Ogre::ColourValue(0.4f, 0.7f, 1.0f, 0.28f));
+
+        fieldCage->end();
+        Ogre::SceneNode *fieldNode =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        fieldNode->attachObject(fieldCage);
+
         // 頂点カラーを確実に使うマテリアルを新規作成
         Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton().create(
             "CubeNoCull", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
