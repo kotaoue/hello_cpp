@@ -36,7 +36,7 @@ hello_ogre/
 
 Homebrew に `ogre` formula は存在しないため、ソースからビルドします。
 
-### 1. 依存ライブラリを Homebrew でインストール
+### Initial Setup
 
 ```sh
 # 依存ライブラリのインストール
@@ -55,11 +55,10 @@ cmake --build . --config Release
 cmake --install .
 ```
 
----
-
 ## Build & Run
 
 ```sh
+cd ../../
 cd hello_ogre
 mkdir -p build && cd build
 cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
