@@ -24,13 +24,15 @@ public:
 class BallOrbiter : public Ogre::FrameListener
 {
     Ogre::SceneNode *mOrbitNode;
+    float mAngularSpeed;
 
 public:
-    explicit BallOrbiter(Ogre::SceneNode *orbitNode) : mOrbitNode(orbitNode) {}
+    BallOrbiter(Ogre::SceneNode *orbitNode, float angularSpeed)
+        : mOrbitNode(orbitNode), mAngularSpeed(angularSpeed) {}
 
     bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
     {
-        mOrbitNode->yaw(Ogre::Radian(-evt.timeSinceLastFrame * 1.2f));
+        mOrbitNode->yaw(Ogre::Radian(evt.timeSinceLastFrame * mAngularSpeed));
         return true;
     }
 };
@@ -40,6 +42,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
 {
     std::unique_ptr<CubeRotator> mRotator;
     std::unique_ptr<BallOrbiter> mBallOrbiter;
+    std::unique_ptr<BallOrbiter> mBallOrbiter2;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -175,50 +178,59 @@ public:
         cubeNode->attachObject(cube);
         cubeNode->setScale(1.0f, 1.0f, 1.0f);
 
-        // 低分割の球体 ManualObject を作成
-        Ogre::ManualObject *ball = scnMgr->createManualObject("Ball");
-        ball->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
-        const int stacks = 12;
-        const int slices = 18;
-        for (int i = 0; i <= stacks; ++i)
+        // 低分割の球体 ManualObject を作成するヘルパー
+        auto createBall = [&](const Ogre::String &name, const Ogre::ColourValue &color)
         {
-            const float v = static_cast<float>(i) / static_cast<float>(stacks);
-            const float phi = Ogre::Math::PI * v;
-            const float y = std::cos(phi);
-            const float r = std::sin(phi);
-
-            for (int j = 0; j <= slices; ++j)
+            Ogre::ManualObject *obj = scnMgr->createManualObject(name);
+            obj->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+            const int stacks = 12;
+            const int slices = 18;
+            for (int i = 0; i <= stacks; ++i)
             {
-                const float u = static_cast<float>(j) / static_cast<float>(slices);
-                const float theta = Ogre::Math::TWO_PI * u;
-                const float x = r * std::cos(theta);
-                const float z = r * std::sin(theta);
+                const float v = static_cast<float>(i) / static_cast<float>(stacks);
+                const float phi = Ogre::Math::PI * v;
+                const float y = std::cos(phi);
+                const float r = std::sin(phi);
 
-                ball->position(0.5f * x, 0.5f * y, 0.5f * z);
-                ball->colour(1.0f, 1.0f, 1.0f);
+                for (int j = 0; j <= slices; ++j)
+                {
+                    const float u = static_cast<float>(j) / static_cast<float>(slices);
+                    const float theta = Ogre::Math::TWO_PI * u;
+                    const float x = r * std::cos(theta);
+                    const float z = r * std::sin(theta);
+
+                    obj->position(0.5f * x, 0.5f * y, 0.5f * z);
+                    obj->colour(color);
+                }
             }
-        }
 
-        for (int i = 0; i < stacks; ++i)
-        {
-            for (int j = 0; j < slices; ++j)
+            for (int i = 0; i < stacks; ++i)
             {
-                const int row1 = i * (slices + 1);
-                const int row2 = (i + 1) * (slices + 1);
-                const Ogre::uint32 a = static_cast<Ogre::uint32>(row1 + j);
-                const Ogre::uint32 b = static_cast<Ogre::uint32>(row1 + j + 1);
-                const Ogre::uint32 c = static_cast<Ogre::uint32>(row2 + j);
-                const Ogre::uint32 d = static_cast<Ogre::uint32>(row2 + j + 1);
+                for (int j = 0; j < slices; ++j)
+                {
+                    const int row1 = i * (slices + 1);
+                    const int row2 = (i + 1) * (slices + 1);
+                    const Ogre::uint32 a = static_cast<Ogre::uint32>(row1 + j);
+                    const Ogre::uint32 b = static_cast<Ogre::uint32>(row1 + j + 1);
+                    const Ogre::uint32 c = static_cast<Ogre::uint32>(row2 + j);
+                    const Ogre::uint32 d = static_cast<Ogre::uint32>(row2 + j + 1);
 
-                ball->index(a);
-                ball->index(c);
-                ball->index(b);
-                ball->index(b);
-                ball->index(c);
-                ball->index(d);
+                    obj->index(a);
+                    obj->index(c);
+                    obj->index(b);
+                    obj->index(b);
+                    obj->index(c);
+                    obj->index(d);
+                }
             }
-        }
-        ball->end();
+            obj->end();
+            return obj;
+        };
+
+        Ogre::ManualObject *ball =
+            createBall("Ball", Ogre::ColourValue(1.0f, 1.0f, 1.0f));
+        Ogre::ManualObject *ball2 =
+            createBall("Ball2", Ogre::ColourValue(1.0f, 0.8f, 0.2f));
 
         // キューブ中心を公転中心にした周回ノードを作り、ボールを配置
         Ogre::SceneNode *orbitNode =
@@ -228,11 +240,22 @@ public:
         ballNode->setScale(0.2f, 0.2f, 0.2f);
         ballNode->attachObject(ball);
 
+        // 2つ目は軌道面を傾け、半径を変えて衝突しないようにする
+        Ogre::SceneNode *orbitNode2 =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        orbitNode2->pitch(Ogre::Degree(35.0f));
+        Ogre::SceneNode *ballNode2 = orbitNode2->createChildSceneNode();
+        ballNode2->setPosition(-2.6f, 0.0f, 0.0f);
+        ballNode2->setScale(0.2f, 0.2f, 0.2f);
+        ballNode2->attachObject(ball2);
+
         // 回転アニメーションを登録
         mRotator = std::make_unique<CubeRotator>(cubeNode);
         root->addFrameListener(mRotator.get());
-        mBallOrbiter = std::make_unique<BallOrbiter>(orbitNode);
+        mBallOrbiter = std::make_unique<BallOrbiter>(orbitNode, -1.2f);
         root->addFrameListener(mBallOrbiter.get());
+        mBallOrbiter2 = std::make_unique<BallOrbiter>(orbitNode2, -0.9f);
+        root->addFrameListener(mBallOrbiter2.get());
     }
 
     bool keyPressed(const OgreBites::KeyboardEvent &evt) override
