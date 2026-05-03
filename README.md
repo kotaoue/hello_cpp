@@ -22,5 +22,6 @@ C++ の学習用リポジトリです。
 | `imgui_hello/` | Dear ImGui + GLFW + OpenGL3 を使った Hello World GUI アプリ |
 | `hello_wx/` | wxWidgets を使った Hello World GUI アプリ |
 | `hello_gtk/` | GTK を使った Hello World GUI アプリ（GTK4 / GTK3 対応） |
+| `hello_ogre/` | OGRE を使った Hello World 3D アプリ |
 
 各ディレクトリの `README.md` にビルド手順と解説があります。
