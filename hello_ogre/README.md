@@ -67,7 +67,7 @@ make && ./ogre_hello
 
 実行すると次のようなウィンドウが表示されます。
 
-![実行結果](https://github.com/user-attachments/assets/79f015df-1999-4321-87d9-8b3153d77330)
+![実行結果](./docs/screenshot.png)
 
 ### 備考
 
