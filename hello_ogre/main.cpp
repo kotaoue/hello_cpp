@@ -3,6 +3,7 @@
 #include <OgreInput.h>
 #include <OgreRTShaderSystem.h>
 #include <memory>
+#include <vector>
 
 // 回転アニメーション用の FrameListener
 class CubeRotator : public Ogre::FrameListener
@@ -37,6 +38,135 @@ public:
     }
 };
 
+// 球体が通過した軌跡にキラキラ粒子を残す FrameListener
+class SparkleTrail : public Ogre::FrameListener
+{
+    struct SparkParticle
+    {
+        Ogre::Billboard *billboard;
+        Ogre::Vector3 drift;
+        float life;
+        float maxLife;
+        float baseSize;
+        bool active;
+    };
+
+    Ogre::BillboardSet *mBillboardSet;
+    std::vector<Ogre::SceneNode *> mEmitters;
+    std::vector<SparkParticle> mParticles;
+    float mSpawnAccumulator;
+
+    void spawnParticle(const Ogre::Vector3 &origin)
+    {
+        for (auto &p : mParticles)
+        {
+            if (p.active)
+                continue;
+
+            const Ogre::Vector3 jitter(
+                Ogre::Math::RangeRandom(-0.04f, 0.04f),
+                Ogre::Math::RangeRandom(-0.04f, 0.04f),
+                Ogre::Math::RangeRandom(-0.04f, 0.04f));
+
+            p.active = true;
+            p.life = 0.0f;
+            p.maxLife = Ogre::Math::RangeRandom(0.35f, 0.75f);
+            p.baseSize = Ogre::Math::RangeRandom(0.03f, 0.08f);
+            p.drift = Ogre::Vector3(
+                Ogre::Math::RangeRandom(-0.25f, 0.25f),
+                Ogre::Math::RangeRandom(0.05f, 0.45f),
+                Ogre::Math::RangeRandom(-0.25f, 0.25f));
+
+            p.billboard->setPosition(origin + jitter);
+            p.billboard->setDimensions(p.baseSize, p.baseSize);
+            p.billboard->setColour(Ogre::ColourValue(
+                Ogre::Math::RangeRandom(0.8f, 1.0f),
+                Ogre::Math::RangeRandom(0.8f, 1.0f),
+                Ogre::Math::RangeRandom(0.7f, 1.0f),
+                0.9f));
+            return;
+        }
+    }
+
+public:
+    SparkleTrail(Ogre::SceneManager *scnMgr,
+                 Ogre::SceneNode *parentNode,
+                 const std::vector<Ogre::SceneNode *> &emitters)
+        : mBillboardSet(nullptr), mEmitters(emitters), mSpawnAccumulator(0.0f)
+    {
+        Ogre::MaterialPtr sparkleMat =
+            Ogre::MaterialManager::getSingleton().getByName("SparkleMat");
+        if (sparkleMat.isNull())
+        {
+            sparkleMat = Ogre::MaterialManager::getSingleton().create(
+                "SparkleMat", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+            Ogre::Pass *pass = sparkleMat->getTechnique(0)->getPass(0);
+            pass->setLightingEnabled(false);
+            pass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
+            pass->setSceneBlending(Ogre::SBT_ADD);
+            pass->setDepthWriteEnabled(false);
+            pass->setCullingMode(Ogre::CULL_NONE);
+        }
+
+        const size_t maxParticles = 900;
+        mBillboardSet = scnMgr->createBillboardSet("SparkleTrailBB", maxParticles);
+        mBillboardSet->setMaterialName("SparkleMat");
+        mBillboardSet->setBillboardType(Ogre::BBT_POINT);
+        parentNode->attachObject(mBillboardSet);
+
+        mParticles.reserve(maxParticles);
+        for (size_t i = 0; i < maxParticles; ++i)
+        {
+            Ogre::Billboard *bb = mBillboardSet->createBillboard(
+                Ogre::Vector3::ZERO, Ogre::ColourValue(1.0f, 1.0f, 1.0f, 0.0f));
+            bb->setDimensions(0.0f, 0.0f);
+            mParticles.push_back({bb, Ogre::Vector3::ZERO, 0.0f, 0.0f, 0.0f, false});
+        }
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mSpawnAccumulator += evt.timeSinceLastFrame;
+        const float spawnInterval = 0.016f;
+
+        while (mSpawnAccumulator >= spawnInterval)
+        {
+            for (Ogre::SceneNode *emitter : mEmitters)
+                spawnParticle(emitter->_getDerivedPosition());
+            mSpawnAccumulator -= spawnInterval;
+        }
+
+        for (auto &p : mParticles)
+        {
+            if (!p.active)
+                continue;
+
+            p.life += evt.timeSinceLastFrame;
+            if (p.life >= p.maxLife)
+            {
+                p.active = false;
+                p.billboard->setDimensions(0.0f, 0.0f);
+                p.billboard->setColour(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 0.0f));
+                continue;
+            }
+
+            const float t = 1.0f - (p.life / p.maxLife);
+            const float size = p.baseSize * (0.6f + 0.8f * t);
+            Ogre::Vector3 pos = p.billboard->getPosition() + (p.drift * evt.timeSinceLastFrame);
+
+            p.billboard->setPosition(pos);
+            p.billboard->setDimensions(size, size);
+            p.billboard->setColour(Ogre::ColourValue(
+                Ogre::Math::RangeRandom(0.85f, 1.0f),
+                Ogre::Math::RangeRandom(0.85f, 1.0f),
+                Ogre::Math::RangeRandom(0.7f, 1.0f),
+                t * 0.8f));
+        }
+
+        return true;
+    }
+};
+
 class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
@@ -44,6 +174,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
     std::unique_ptr<BallOrbiter> mBallOrbiter;
     std::unique_ptr<BallOrbiter> mBallOrbiter2;
     std::unique_ptr<BallOrbiter> mBallOrbiter3;
+    std::unique_ptr<SparkleTrail> mSparkleTrail;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -270,6 +401,13 @@ public:
         root->addFrameListener(mBallOrbiter2.get());
         mBallOrbiter3 = std::make_unique<BallOrbiter>(orbitNode3, -0.7f);
         root->addFrameListener(mBallOrbiter3.get());
+
+        std::vector<Ogre::SceneNode *> sparkleEmitters = {ballNode, ballNode2, ballNode3};
+        Ogre::SceneNode *sparkleNode =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        mSparkleTrail =
+            std::make_unique<SparkleTrail>(scnMgr, sparkleNode, sparkleEmitters);
+        root->addFrameListener(mSparkleTrail.get());
     }
 
     bool keyPressed(const OgreBites::KeyboardEvent &evt) override
