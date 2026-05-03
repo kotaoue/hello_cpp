@@ -43,6 +43,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
     std::unique_ptr<CubeRotator> mRotator;
     std::unique_ptr<BallOrbiter> mBallOrbiter;
     std::unique_ptr<BallOrbiter> mBallOrbiter2;
+    std::unique_ptr<BallOrbiter> mBallOrbiter3;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -231,6 +232,8 @@ public:
             createBall("Ball", Ogre::ColourValue(1.0f, 1.0f, 1.0f));
         Ogre::ManualObject *ball2 =
             createBall("Ball2", Ogre::ColourValue(1.0f, 0.8f, 0.2f));
+        Ogre::ManualObject *ball3 =
+            createBall("Ball3", Ogre::ColourValue(0.3f, 1.0f, 1.0f));
 
         // キューブ中心を公転中心にした周回ノードを作り、ボールを配置
         Ogre::SceneNode *orbitNode =
@@ -249,6 +252,15 @@ public:
         ballNode2->setScale(0.2f, 0.2f, 0.2f);
         ballNode2->attachObject(ball2);
 
+        // 3つ目はさらに別の軌道面・半径で配置
+        Ogre::SceneNode *orbitNode3 =
+            scnMgr->getRootSceneNode()->createChildSceneNode();
+        orbitNode3->roll(Ogre::Degree(50.0f));
+        Ogre::SceneNode *ballNode3 = orbitNode3->createChildSceneNode();
+        ballNode3->setPosition(0.0f, 0.0f, 3.2f);
+        ballNode3->setScale(0.2f, 0.2f, 0.2f);
+        ballNode3->attachObject(ball3);
+
         // 回転アニメーションを登録
         mRotator = std::make_unique<CubeRotator>(cubeNode);
         root->addFrameListener(mRotator.get());
@@ -256,6 +268,8 @@ public:
         root->addFrameListener(mBallOrbiter.get());
         mBallOrbiter2 = std::make_unique<BallOrbiter>(orbitNode2, -0.9f);
         root->addFrameListener(mBallOrbiter2.get());
+        mBallOrbiter3 = std::make_unique<BallOrbiter>(orbitNode3, -0.7f);
+        root->addFrameListener(mBallOrbiter3.get());
     }
 
     bool keyPressed(const OgreBites::KeyboardEvent &evt) override
