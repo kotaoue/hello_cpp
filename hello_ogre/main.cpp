@@ -310,6 +310,36 @@ public:
     }
 };
 
+// カメラをゆっくり動かしつつ、常に対象をフォーカスする FrameListener
+class CameraFocusAnimator : public Ogre::FrameListener
+{
+    Ogre::SceneNode *mCameraNode;
+    Ogre::SceneNode *mTargetNode;
+    float mTime;
+
+public:
+    CameraFocusAnimator(Ogre::SceneNode *cameraNode, Ogre::SceneNode *targetNode)
+        : mCameraNode(cameraNode), mTargetNode(targetNode), mTime(0.0f)
+    {
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mTime += evt.timeSinceLastFrame;
+
+        // ゆるい水平周回 + 上下の揺れ
+        const float angle = mTime * 0.18f;
+        const float radius = 6.0f + (0.5f * std::sin(mTime * 0.23f));
+        const float x = std::sin(angle) * radius;
+        const float z = std::cos(angle) * radius;
+        const float y = 0.35f + (0.25f * std::sin(mTime * 0.31f));
+
+        mCameraNode->setPosition(x, y, z);
+        mCameraNode->lookAt(mTargetNode->_getDerivedPosition(), Ogre::Node::TS_WORLD);
+        return true;
+    }
+};
+
 class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
@@ -321,6 +351,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
     std::unique_ptr<SparkleTrail> mSparkleTrail;
     std::unique_ptr<AuroraBackground> mAuroraBackground;
     std::unique_ptr<BackgroundColorAnimator> mBackgroundColorAnimator;
+    std::unique_ptr<CameraFocusAnimator> mCameraFocusAnimator;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -474,6 +505,11 @@ public:
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
         cubeNode->setScale(1.0f, 1.0f, 1.0f);
+
+        // カメラをゆっくり移動させつつ、キューブ中心を追従
+        mCameraFocusAnimator =
+            std::make_unique<CameraFocusAnimator>(camNode, cubeNode);
+        root->addFrameListener(mCameraFocusAnimator.get());
 
         // キューブ内部に正三角錐（四面体）を配置
         Ogre::ManualObject *tetra = scnMgr->createManualObject("InnerTetra");
