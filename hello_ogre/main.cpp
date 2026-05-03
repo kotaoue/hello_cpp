@@ -7,12 +7,12 @@
 // 回転アニメーション用の FrameListener
 class CubeRotator : public Ogre::FrameListener
 {
-    Ogre::SceneNode* mNode;
+    Ogre::SceneNode *mNode;
 
 public:
-    explicit CubeRotator(Ogre::SceneNode* node) : mNode(node) {}
+    explicit CubeRotator(Ogre::SceneNode *node) : mNode(node) {}
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
     {
         mNode->yaw(Ogre::Radian(evt.timeSinceLastFrame));
         mNode->pitch(Ogre::Radian(evt.timeSinceLastFrame * 0.5f));
@@ -28,26 +28,39 @@ class HelloOgre : public OgreBites::ApplicationContext,
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
 
+    bool oneTimeConfig() override
+    {
+        Ogre::Root *root = getRoot();
+        Ogre::RenderSystem *rs =
+            root->getRenderSystemByName("OpenGL 3+ Rendering Subsystem");
+        if (!rs)
+            rs = root->getRenderSystemByName("OpenGL Rendering Subsystem");
+        if (!rs)
+            return false;
+        root->setRenderSystem(rs);
+        return true;
+    }
+
     void setup() override
     {
         OgreBites::ApplicationContext::setup();
         addInputListener(this);
 
-        Ogre::Root* root = getRoot();
-        Ogre::SceneManager* scnMgr = root->createSceneManager();
+        Ogre::Root *root = getRoot();
+        Ogre::SceneManager *scnMgr = root->createSceneManager();
 
         // RTShader システムへのシーン登録
-        Ogre::RTShader::ShaderGenerator* shadergen =
+        Ogre::RTShader::ShaderGenerator *shadergen =
             Ogre::RTShader::ShaderGenerator::getSingletonPtr();
         shadergen->addSceneManager(scnMgr);
 
         // カメラの設定
-        Ogre::SceneNode* camNode =
+        Ogre::SceneNode *camNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
         camNode->setPosition(0.0f, 0.0f, 3.0f);
         camNode->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f), Ogre::Node::TS_WORLD);
 
-        Ogre::Camera* cam = scnMgr->createCamera("MainCam");
+        Ogre::Camera *cam = scnMgr->createCamera("MainCam");
         cam->setNearClipDistance(0.1f);
         cam->setAutoAspectRatio(true);
         camNode->attachObject(cam);
@@ -58,60 +71,88 @@ public:
 
         // 両面描画マテリアルを作成（BaseWhiteNoLighting をベースに）
         Ogre::MaterialPtr mat = Ogre::MaterialManager::getSingleton()
-            .getByName("BaseWhiteNoLighting")
-            ->clone("CubeNoCull");
+                                    .getByName("BaseWhiteNoLighting")
+                                    ->clone("CubeNoCull");
         mat->getTechnique(0)->getPass(0)->setCullingMode(Ogre::CULL_NONE);
 
         // ManualObject で頂点カラー付き立方体を作成
-        Ogre::ManualObject* cube = scnMgr->createManualObject("Cube");
+        Ogre::ManualObject *cube = scnMgr->createManualObject("Cube");
         cube->begin("CubeNoCull", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 
         // 前面 (z = +0.5)
-        cube->position(-0.5f, -0.5f,  0.5f); cube->colour(1.0f, 0.0f, 0.0f);
-        cube->position( 0.5f, -0.5f,  0.5f); cube->colour(0.0f, 1.0f, 0.0f);
-        cube->position( 0.5f,  0.5f,  0.5f); cube->colour(0.0f, 0.0f, 1.0f);
-        cube->position(-0.5f,  0.5f,  0.5f); cube->colour(1.0f, 1.0f, 0.0f);
+        cube->position(-0.5f, -0.5f, 0.5f);
+        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->position(0.5f, -0.5f, 0.5f);
+        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->position(0.5f, 0.5f, 0.5f);
+        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->position(-0.5f, 0.5f, 0.5f);
+        cube->colour(1.0f, 1.0f, 0.0f);
 
         // 背面 (z = -0.5)
-        cube->position( 0.5f, -0.5f, -0.5f); cube->colour(0.0f, 1.0f, 1.0f);
-        cube->position(-0.5f, -0.5f, -0.5f); cube->colour(1.0f, 0.0f, 1.0f);
-        cube->position(-0.5f,  0.5f, -0.5f); cube->colour(1.0f, 1.0f, 1.0f);
-        cube->position( 0.5f,  0.5f, -0.5f); cube->colour(0.5f, 0.5f, 0.0f);
+        cube->position(0.5f, -0.5f, -0.5f);
+        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->position(-0.5f, -0.5f, -0.5f);
+        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->position(-0.5f, 0.5f, -0.5f);
+        cube->colour(1.0f, 1.0f, 1.0f);
+        cube->position(0.5f, 0.5f, -0.5f);
+        cube->colour(0.5f, 0.5f, 0.0f);
 
         // 上面 (y = +0.5)
-        cube->position(-0.5f,  0.5f,  0.5f); cube->colour(1.0f, 1.0f, 0.0f);
-        cube->position( 0.5f,  0.5f,  0.5f); cube->colour(0.0f, 0.0f, 1.0f);
-        cube->position( 0.5f,  0.5f, -0.5f); cube->colour(0.5f, 0.5f, 0.0f);
-        cube->position(-0.5f,  0.5f, -0.5f); cube->colour(1.0f, 1.0f, 1.0f);
+        cube->position(-0.5f, 0.5f, 0.5f);
+        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->position(0.5f, 0.5f, 0.5f);
+        cube->colour(0.0f, 0.0f, 1.0f);
+        cube->position(0.5f, 0.5f, -0.5f);
+        cube->colour(0.5f, 0.5f, 0.0f);
+        cube->position(-0.5f, 0.5f, -0.5f);
+        cube->colour(1.0f, 1.0f, 1.0f);
 
         // 下面 (y = -0.5)
-        cube->position(-0.5f, -0.5f, -0.5f); cube->colour(1.0f, 0.0f, 1.0f);
-        cube->position( 0.5f, -0.5f, -0.5f); cube->colour(0.0f, 1.0f, 1.0f);
-        cube->position( 0.5f, -0.5f,  0.5f); cube->colour(0.0f, 1.0f, 0.0f);
-        cube->position(-0.5f, -0.5f,  0.5f); cube->colour(1.0f, 0.0f, 0.0f);
+        cube->position(-0.5f, -0.5f, -0.5f);
+        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->position(0.5f, -0.5f, -0.5f);
+        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->position(0.5f, -0.5f, 0.5f);
+        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->position(-0.5f, -0.5f, 0.5f);
+        cube->colour(1.0f, 0.0f, 0.0f);
 
         // 右面 (x = +0.5)
-        cube->position( 0.5f, -0.5f,  0.5f); cube->colour(0.0f, 1.0f, 0.0f);
-        cube->position( 0.5f, -0.5f, -0.5f); cube->colour(0.0f, 1.0f, 1.0f);
-        cube->position( 0.5f,  0.5f, -0.5f); cube->colour(0.5f, 0.5f, 0.0f);
-        cube->position( 0.5f,  0.5f,  0.5f); cube->colour(0.0f, 0.0f, 1.0f);
+        cube->position(0.5f, -0.5f, 0.5f);
+        cube->colour(0.0f, 1.0f, 0.0f);
+        cube->position(0.5f, -0.5f, -0.5f);
+        cube->colour(0.0f, 1.0f, 1.0f);
+        cube->position(0.5f, 0.5f, -0.5f);
+        cube->colour(0.5f, 0.5f, 0.0f);
+        cube->position(0.5f, 0.5f, 0.5f);
+        cube->colour(0.0f, 0.0f, 1.0f);
 
         // 左面 (x = -0.5)
-        cube->position(-0.5f, -0.5f, -0.5f); cube->colour(1.0f, 0.0f, 1.0f);
-        cube->position(-0.5f, -0.5f,  0.5f); cube->colour(1.0f, 0.0f, 0.0f);
-        cube->position(-0.5f,  0.5f,  0.5f); cube->colour(1.0f, 1.0f, 0.0f);
-        cube->position(-0.5f,  0.5f, -0.5f); cube->colour(1.0f, 1.0f, 1.0f);
+        cube->position(-0.5f, -0.5f, -0.5f);
+        cube->colour(1.0f, 0.0f, 1.0f);
+        cube->position(-0.5f, -0.5f, 0.5f);
+        cube->colour(1.0f, 0.0f, 0.0f);
+        cube->position(-0.5f, 0.5f, 0.5f);
+        cube->colour(1.0f, 1.0f, 0.0f);
+        cube->position(-0.5f, 0.5f, -0.5f);
+        cube->colour(1.0f, 1.0f, 1.0f);
 
         // 各面 2 三角形 × 6 面のインデックス
         for (Ogre::uint32 i = 0; i < 6; ++i)
         {
             Ogre::uint32 base = i * 4;
-            cube->index(base);     cube->index(base + 1); cube->index(base + 2);
-            cube->index(base);     cube->index(base + 2); cube->index(base + 3);
+            cube->index(base);
+            cube->index(base + 1);
+            cube->index(base + 2);
+            cube->index(base);
+            cube->index(base + 2);
+            cube->index(base + 3);
         }
         cube->end();
 
-        Ogre::SceneNode* cubeNode =
+        Ogre::SceneNode *cubeNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
 
@@ -120,7 +161,7 @@ public:
         root->addFrameListener(mRotator.get());
     }
 
-    bool keyPressed(const OgreBites::KeyboardEvent& evt) override
+    bool keyPressed(const OgreBites::KeyboardEvent &evt) override
     {
         if (evt.keysym.sym == OgreBites::SDLK_ESCAPE)
             getRoot()->queueEndRendering();
