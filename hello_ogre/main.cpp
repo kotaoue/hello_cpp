@@ -255,6 +255,61 @@ public:
     }
 };
 
+// 背景色をランダムターゲットへ徐々に遷移させる FrameListener
+class BackgroundColorAnimator : public Ogre::FrameListener
+{
+    Ogre::Viewport *mViewport;
+    Ogre::ColourValue mCurrent;
+    Ogre::ColourValue mStart;
+    Ogre::ColourValue mTarget;
+    float mElapsed;
+    float mDuration;
+
+    void chooseNextTarget()
+    {
+        mStart = mCurrent;
+        mTarget = Ogre::ColourValue(
+            Ogre::Math::RangeRandom(0.02f, 0.18f),
+            Ogre::Math::RangeRandom(0.02f, 0.18f),
+            Ogre::Math::RangeRandom(0.05f, 0.25f));
+        mDuration = Ogre::Math::RangeRandom(3.5f, 7.0f);
+        mElapsed = 0.0f;
+    }
+
+public:
+    explicit BackgroundColorAnimator(Ogre::Viewport *viewport)
+        : mViewport(viewport),
+          mCurrent(0.03f, 0.03f, 0.08f),
+          mStart(mCurrent),
+          mTarget(mCurrent),
+          mElapsed(0.0f),
+          mDuration(1.0f)
+    {
+        mViewport->setBackgroundColour(mCurrent);
+        chooseNextTarget();
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent &evt) override
+    {
+        mElapsed += evt.timeSinceLastFrame;
+        float t = mElapsed / mDuration;
+        if (t > 1.0f)
+            t = 1.0f;
+
+        // 急な色変化を避けるための smoothstep 補間
+        const float smooth = t * t * (3.0f - (2.0f * t));
+        mCurrent.r = mStart.r + ((mTarget.r - mStart.r) * smooth);
+        mCurrent.g = mStart.g + ((mTarget.g - mStart.g) * smooth);
+        mCurrent.b = mStart.b + ((mTarget.b - mStart.b) * smooth);
+        mViewport->setBackgroundColour(mCurrent);
+
+        if (t >= 1.0f)
+            chooseNextTarget();
+
+        return true;
+    }
+};
+
 class HelloOgre : public OgreBites::ApplicationContext,
                   public OgreBites::InputListener
 {
@@ -265,6 +320,7 @@ class HelloOgre : public OgreBites::ApplicationContext,
     std::unique_ptr<BallOrbiter> mBallOrbiter3;
     std::unique_ptr<SparkleTrail> mSparkleTrail;
     std::unique_ptr<AuroraBackground> mAuroraBackground;
+    std::unique_ptr<BackgroundColorAnimator> mBackgroundColorAnimator;
 
 public:
     HelloOgre() : OgreBites::ApplicationContext("Hello OGRE") {}
@@ -305,7 +361,10 @@ public:
         cam->setNearClipDistance(0.1f);
         cam->setAutoAspectRatio(true);
         camNode->attachObject(cam);
-        getRenderWindow()->addViewport(cam);
+        Ogre::Viewport *mainViewport = getRenderWindow()->addViewport(cam);
+        mBackgroundColorAnimator =
+            std::make_unique<BackgroundColorAnimator>(mainViewport);
+        root->addFrameListener(mBackgroundColorAnimator.get());
 
         // 環境光（全体照明）
         scnMgr->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f));
