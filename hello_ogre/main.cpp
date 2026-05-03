@@ -173,7 +173,7 @@ public:
         Ogre::SceneNode *cubeNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
-        cubeNode->setScale(0.6f, 0.6f, 0.6f);
+        cubeNode->setScale(0.2f, 0.2f, 0.2f);
 
         // 低分割の球体 ManualObject を作成
         Ogre::ManualObject *ball = scnMgr->createManualObject("Ball");
