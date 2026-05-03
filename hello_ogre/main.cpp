@@ -57,7 +57,7 @@ public:
         // カメラの設定
         Ogre::SceneNode *camNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
-        camNode->setPosition(0.0f, 0.0f, 3.0f);
+        camNode->setPosition(0.0f, 0.0f, 6.0f);
         camNode->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f), Ogre::Node::TS_WORLD);
 
         Ogre::Camera *cam = scnMgr->createCamera("MainCam");
@@ -157,6 +157,7 @@ public:
         Ogre::SceneNode *cubeNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
+        cubeNode->setScale(0.6f, 0.6f, 0.6f);
 
         // 回転アニメーションを登録
         mRotator = std::make_unique<CubeRotator>(cubeNode);
