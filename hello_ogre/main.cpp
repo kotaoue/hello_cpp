@@ -173,7 +173,7 @@ public:
         Ogre::SceneNode *cubeNode =
             scnMgr->getRootSceneNode()->createChildSceneNode();
         cubeNode->attachObject(cube);
-        cubeNode->setScale(0.2f, 0.2f, 0.2f);
+        cubeNode->setScale(1.0f, 1.0f, 1.0f);
 
         // 低分割の球体 ManualObject を作成
         Ogre::ManualObject *ball = scnMgr->createManualObject("Ball");
@@ -225,7 +225,7 @@ public:
             scnMgr->getRootSceneNode()->createChildSceneNode();
         Ogre::SceneNode *ballNode = orbitNode->createChildSceneNode();
         ballNode->setPosition(2.0f, 0.0f, 0.0f);
-        ballNode->setScale(0.3f, 0.3f, 0.3f);
+        ballNode->setScale(0.2f, 0.2f, 0.2f);
         ballNode->attachObject(ball);
 
         // 回転アニメーションを登録
