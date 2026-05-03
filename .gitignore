@@ -49,5 +49,8 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 
+# MacOS specific files
+.DS_Store
+
 # OGRE
 ogre
