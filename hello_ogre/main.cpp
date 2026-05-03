@@ -83,7 +83,7 @@ class SparkleTrail : public Ogre::FrameListener
                 Ogre::Math::RangeRandom(0.8f, 1.0f),
                 Ogre::Math::RangeRandom(0.8f, 1.0f),
                 Ogre::Math::RangeRandom(0.7f, 1.0f),
-                0.9f));
+                0.45f));
             return;
         }
     }
@@ -160,7 +160,7 @@ public:
                 Ogre::Math::RangeRandom(0.85f, 1.0f),
                 Ogre::Math::RangeRandom(0.85f, 1.0f),
                 Ogre::Math::RangeRandom(0.7f, 1.0f),
-                t * 0.8f));
+                t * 0.35f));
         }
 
         return true;
