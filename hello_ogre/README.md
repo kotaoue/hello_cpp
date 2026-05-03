@@ -53,23 +53,18 @@ cmake .. \
   -DOGRE_BUILD_COMPONENT_RTSHADERSYSTEM=ON
 cmake --build . --config Release
 cmake --install .
+cd ../../
 ```
 
 ## Build & Run
 
 ```sh
-cd ../../
 cd hello_ogre
 mkdir -p build && cd build
 cmake -DCMAKE_PREFIX_PATH=$HOME/ogre-dist ..
 make
 ./ogre_hello
 ```
-
-実行すると頂点カラー付きの立方体が回転する OGRE ウィンドウが表示されます。  
-Esc キーを押すかウィンドウを閉じると終了します。
-
----
 
 ## トラブルシューティング
 
