@@ -9,9 +9,6 @@ project(HelloCocos2dx CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add hello_cocos2d directory to include path first, to override system headers
-include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR})
-
 # Cocos2d-x のルートディレクトリ（デフォルト: このディレクトリの隣の cocos2d-x/）
 if(NOT DEFINED COCOS2DX_ROOT_PATH)
     set(COCOS2DX_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cocos2d-x")
@@ -19,9 +16,10 @@ endif()
 
 set(CMAKE_MODULE_PATH ${COCOS2DX_ROOT_PATH}/cmake/Modules/)
 
-# macOS での iconv コンパイルエラーを回避するため、プリプロセッサマクロを定義
+# macOS での iconv コンパイルエラーを回避するため、エラーを警告に降格
 if(APPLE)
-    add_definitions(-DCC_TARGET_PLATFORM=CC_PLATFORM_ANDROID)
+    # -fpermissive フラグを使用して、エラーを警告に変換
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 endif()
 
 # Cocos2d-x では iconv を使用するが、macOS SDK の最新版では型の問題がある
