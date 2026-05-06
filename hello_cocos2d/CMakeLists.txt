@@ -47,6 +47,7 @@ set(APP_SOURCE_FILES
     main.cpp
     Classes/AppDelegate.cpp
     Classes/HelloWorldScene.cpp
+    iconv_stub.cpp
 )
 
 add_executable(${PROJECT_NAME}
