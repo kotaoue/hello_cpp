@@ -16,6 +16,11 @@ endif()
 
 set(CMAKE_MODULE_PATH ${COCOS2DX_ROOT_PATH}/cmake/Modules/)
 
+# macOS での iconv コンパイルエラーを回避するため、プリプロセッサマクロを定義
+if(APPLE)
+    add_definitions(-DCC_TARGET_PLATFORM=CC_PLATFORM_ANDROID)
+endif()
+
 # Cocos2d-x では iconv を使用するが、macOS SDK の最新版では型の問題がある
 # iconv を使用しないようにマークしておく（UI フォント対応を無効化）
 set(USE_COCOS_FREETYPE OFF CACHE BOOL "Disable FreeType to avoid iconv issues" FORCE)
@@ -32,16 +37,6 @@ add_subdirectory(
     ${COCOS2DX_ROOT_PATH}/cocos
     ${ENGINE_BINARY_PATH}/cocos/core
 )
-
-# macOS での iconv コンパイルエラーを回避するため、Android と同様に扱う
-if(APPLE)
-    get_target_property(COCOS_COMPILE_DEFS cocos2d COMPILE_DEFINITIONS)
-    if(NOT COCOS_COMPILE_DEFS)
-        set(COCOS_COMPILE_DEFS "")
-    endif()
-    list(APPEND COCOS_COMPILE_DEFS "CC_TARGET_PLATFORM=CC_PLATFORM_ANDROID")
-    set_target_properties(cocos2d PROPERTIES COMPILE_DEFINITIONS "${COCOS_COMPILE_DEFS}")
-endif()
 
 set(APP_HEADER_FILES
     Classes/AppDelegate.h
