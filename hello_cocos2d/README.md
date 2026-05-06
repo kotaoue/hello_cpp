@@ -65,3 +65,47 @@ make -j4
 ```
 
 実行すると黒い背景に白字で "Hello, World!" と書かれたウィンドウが表示されます。
+
+---
+
+## 注意事項
+
+### macOS での動作について
+
+このプロジェクトは **macOS では動作しません**。理由は以下の通りです：
+
+- **cocos2d-x v4.0 のリリース時期**: 2019年
+- **問題**: 最新の macOS SDK（Xcode 15以降）では、`iconv` 関数のシグネチャが変更されました
+- **コンパイルエラー**: 型の不一致により、`iconv_close()` と `iconv()` の呼び出しでコンパイルエラーが発生します
+- **回避策なし**: CMake フラグやコンパイラオプションでは解決できない、根本的なフレームワークレベルの問題です
+
+---
+
+## macOS での C++ GUI 開発への代替案
+
+macOS で C++ GUI アプリケーションを開発する場合は、以下のライブラリを推奨します：
+
+### 1. **Qt** （推奨）
+- 最高レベルのクロスプラットフォーム対応
+- macOS での UI が native に見える
+- 公式サイト: https://www.qt.io/
+
+### 2. **wxWidgets**
+- オープンソース、シンプルな API
+- macOS の Cocoa をネイティブに使用
+- 公式サイト: https://wxwidgets.org/
+
+### 3. **FLTK（Fast Light Toolkit）**
+- 軽量で シンプル
+- macOS に対応した版が存在
+- 公式サイト: https://www.fltk.org/
+
+### 4. **Dear ImGui**
+- ゲーム・実時間アプリ向け
+- デスクトップアプリにも利用可能
+- 公式サイト: https://github.com/ocornut/imgui
+
+### 5. **Cocoa（macOS Native）**
+- macOS 専用ですが、最高のパフォーマンス
+- Objective-C++ を使用した直接的なネイティブ開発
+- Apple Developer Documentation: https://developer.apple.com/documentation/appkit
