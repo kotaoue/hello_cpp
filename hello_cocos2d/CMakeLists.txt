@@ -16,10 +16,10 @@ endif()
 
 set(CMAKE_MODULE_PATH ${COCOS2DX_ROOT_PATH}/cmake/Modules/)
 
-# macOS での iconv コンパイルエラーを回避するため、エラーを警告に降格
+# macOS での iconv コンパイルエラーを回避するため、エラーを警告に変換
 if(APPLE)
-    # -fpermissive フラグを使用して、エラーを警告に変換
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
+    # すべてのエラーを警告に変換
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
 endif()
 
 # Cocos2d-x では iconv を使用するが、macOS SDK の最新版では型の問題がある
