@@ -35,7 +35,6 @@ hello_cocos2d/
 
 ```sh
 # hello_cocos2d の隣に cocos2d-x を配置する
-cd <このリポジトリのルート>
 git clone https://github.com/cocos2d/cocos2d-x.git
 cd cocos2d-x
 git checkout cocos2d-x-4.0
