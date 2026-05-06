@@ -16,6 +16,10 @@ endif()
 
 set(CMAKE_MODULE_PATH ${COCOS2DX_ROOT_PATH}/cmake/Modules/)
 
+# Cocos2d-x では iconv を使用するが、macOS SDK の最新版では型の問題がある
+# iconv を使用しないようにマークしておく（UI フォント対応を無効化）
+set(USE_COCOS_FREETYPE OFF CACHE BOOL "Disable FreeType to avoid iconv issues" FORCE)
+
 include(CocosBuildSet)
 
 set(BUILD_LUA_LIBS OFF)
