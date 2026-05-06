@@ -49,8 +49,9 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 
+# External dependencies
+ogre/
+cocos2d-x/
+
 # MacOS specific files
 .DS_Store
-
-# OGRE
-ogre
