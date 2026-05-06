@@ -9,6 +9,9 @@ project(HelloCocos2dx CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Add hello_cocos2d directory to include path first, to override system headers
+include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Cocos2d-x のルートディレクトリ（デフォルト: このディレクトリの隣の cocos2d-x/）
 if(NOT DEFINED COCOS2DX_ROOT_PATH)
     set(COCOS2DX_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cocos2d-x")
