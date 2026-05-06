@@ -350,7 +350,8 @@ class CocosZipInstaller(object):
 
 
 def main():
-    workpath = os.path.dirname(os.path.realpath(__file__))
+    # This script lives under cocos2d-x-tools/, so project root is one level up.
+    workpath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
     parser = OptionParser()
     parser.add_option('-r', '--remove-download',
