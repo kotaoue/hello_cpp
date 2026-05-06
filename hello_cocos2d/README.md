@@ -38,8 +38,8 @@ hello_cocos2d/
 git clone https://github.com/cocos2d/cocos2d-x.git
 cd cocos2d-x
 git checkout cocos2d-x-4.0
-# Python 3 対応スクリプトでサードパーティライブラリをダウンロード
-python3 download-deps-3.py
+# リポジトリ側の Python 3 対応スクリプトでサードパーティライブラリをダウンロード
+python3 ../cocos2d-x-tools/download-deps.py
 # サブモジュールを初期化
 git submodule update --init
 ```
